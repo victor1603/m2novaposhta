@@ -57,7 +57,7 @@ class Config extends AbstractHelper
 
     public function getGoogleKey()
     {
-        return 'AIzaSyAA6svkuyrlBU5Zf54Msfcw9Ldts87THRM';
+        return 'ggl_key';
     }
 
 }
