@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="CodeCustom\NovaPoshta\Api\Data\CityInterface" type="CodeCustom\NovaPoshta\Model\City" />
+    <preference for="CodeCustom\NovaPoshta\Api\Data\WarehouseInterface" type="CodeCustom\NovaPoshta\Model\Warehouse" />
+    <preference for="CodeCustom\NovaPoshta\Api\CityRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\City" />
+    <preference for="CodeCustom\NovaPoshta\Api\WarehouseRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\Warehouse" />
+    <preference for="CodeCustom\NovaPoshta\Api\StreetRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\Street" />
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="novaposhta_shipping_address" type="CodeCustom\NovaPoshta\Plugin\ShippingInformationManagementPlugin" sortOrder="1"/>
+    </type>
+</config>

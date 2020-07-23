@@ -1,0 +1,31 @@
+<?php
+/* @var $block \CodeCustom\NovaPoshta\Block\System\Config\Area */
+?>
+
+<script>
+    require([
+        'jquery',
+        'Magento_Ui/js/modal/alert'
+    ], function ($, alert) {
+        function npAreaSync() {
+
+            new Ajax.Request('<?= $block->escapeJs($block->escapeUrl($block->getAjaxUrl())) ?>', {
+                parameters: {},
+                onSuccess: function (response) {
+                    alert({ content:'Successfully updated' });
+
+                },
+                onFailure: function (response) {
+                    alert({ content:'Error, please try latter'});
+                }
+            });
+        }
+        window.npAreaSync = npAreaSync;
+    });
+</script>
+
+<div class="pp-buttons-container">
+    <button style="width: 110px" onclick="npAreaSync(); return false;" type="button" id="<?= $block->escapeHtmlAttr($block->getHtmlId()) ?>">
+        <span><?= $block->escapeHtml(__($block->getButtonLabel())) ?></span>
+    </button>
+</div>

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <novaposhta_credentials>
+            <credentials>
+                <api_key>7742f2d4874954c4fd7ddef41780e7ef</api_key>
+                <api_url>https://api.novaposhta.ua/v2.0/json/</api_url>
+            </credentials>
+        </novaposhta_credentials>
+        <carriers>
+            <novaposhtashippingkiev>
+                <active>0</active>
+                <title>Новая почта - доставка по Киеву в отделение</title>
+                <model>CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaKiev</model>
+            </novaposhtashippingkiev>
+            <novaposhtashippingwarehouse>
+                <active>0</active>
+                <title>Новая почта - доставка по Украине на склад</title>
+                <model>CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaWarehouse</model>
+            </novaposhtashippingwarehouse>
+            <novaposhtashippingaddress>
+                <active>0</active>
+                <title>Новая почта - доставка по Украине, адресная доставка</title>
+                <model>CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaAddress</model>
+            </novaposhtashippingaddress>
+
+            <suburbkievshippingaddress>
+                <active>0</active>
+                <title>В пригород Киева</title>
+                <model>CodeCustom\NovaPoshta\Model\Carrier\KievSuburb</model>
+            </suburbkievshippingaddress>
+            <standardkievshippingaddress>
+                <active>0</active>
+                <title>Стандартная курьерская по Киеву</title>
+                <model>CodeCustom\NovaPoshta\Model\Carrier\KievStandard</model>
+            </standardkievshippingaddress>
+            <fastkievshippingaddress>
+                <active>0</active>
+                <title>Срочная курьерская по Киеву</title>
+                <model>CodeCustom\NovaPoshta\Model\Carrier\KievFast</model>
+            </fastkievshippingaddress>
+        </carriers>
+    </default>
+</config>

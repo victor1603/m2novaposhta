@@ -1,0 +1,22 @@
+{
+  "name": "codecustom/module-novaposhta",
+  "description": "Magento 2 module",
+  "minimum-stability": "alpha",
+  "version": "0.0.1",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "victorP",
+      "email": "pankovych.v@gmail.com"
+    }
+  ],
+    "prefer-stable": true,
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "CodeCustom\\NovaPoshta\\": ""
+        }
+    }
+}

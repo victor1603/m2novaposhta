@@ -1,0 +1,63 @@
+directive @doc(description: String="") on QUERY
+    | MUTATION
+    | FIELD
+    | FRAGMENT_DEFINITION
+    | FRAGMENT_SPREAD
+    | INLINE_FRAGMENT
+    | SCHEMA
+    | SCALAR
+    | OBJECT
+    | FIELD_DEFINITION
+    | ARGUMENT_DEFINITION
+    | INTERFACE
+    | UNION
+    | ENUM
+    | ENUM_VALUE
+    | INPUT_OBJECT
+    | INPUT_FIELD_DEFINITION
+directive @resolver(class: String) on FIELD_DEFINITION
+directive @cache(cacheable: Boolean) on FIELD_DEFINITION
+
+type Query {
+    novaPoshtaWarehouse(city_ref: String!, search: String): [NpWareHouses] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Warehouse")
+    googleStreets(city: String!, search: String!): [GglStreets] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Streets")
+}
+
+type SelectedShippingMethod {
+    shipping_method_extend: SelectedShippingMethodExtend @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\ShippingAddress\\SelectedShippingMethod")
+}
+
+type SelectedShippingMethodExtend {
+    city_view: CityView
+    warehouse_view: WareHouseView
+    street_view: StreetView
+}
+
+type CityView {
+    input_view: Boolean
+    input_data: [NpCities]
+}
+
+type WareHouseView {
+    input_view: Boolean
+    input_data: [NpWareHouses]
+}
+
+type StreetView {
+    input_view: Boolean
+    input_data: [GglStreets]
+}
+
+type NpCities {
+    ref: String
+    name: String
+}
+
+type NpWareHouses {
+    ref: String
+    name: String
+}
+
+type GglStreets {
+    name: String
+}

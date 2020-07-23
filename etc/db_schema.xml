@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="code_custom_novaposhta_areas" resource="default" engine="innodb" comment="Nova Poshta areas">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="description_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="ref" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="areas_center" nullable="true" length="255"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="NOVAPOSHTA_REF_UN">
+            <column name="ref"/>
+        </constraint>
+    </table>
+    <table name="code_custom_novaposhta_city" resource="default" engine="innodb" comment="Nova Poshta cities">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="description_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="ref" nullable="true" length="255"/>
+        <column xsi:type="int" name="delivery_1" nullable="true"/>
+        <column xsi:type="int" name="delivery_2" nullable="true"/>
+        <column xsi:type="int" name="delivery_3" nullable="true"/>
+        <column xsi:type="int" name="delivery_4" nullable="true"/>
+        <column xsi:type="int" name="delivery_5" nullable="true"/>
+        <column xsi:type="int" name="delivery_6" nullable="true"/>
+        <column xsi:type="int" name="delivery_7" nullable="true"/>
+        <column xsi:type="int" name="city_id" nullable="true"/>
+        <column xsi:type="varchar" name="area" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_type" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_type_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_type_description_ru" nullable="true" length="255"/>
+        <column xsi:type="int" name="postomat" nullable="true"/>
+        <column xsi:type="varchar" name="area_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="area_description_ru" nullable="true" length="255"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="NOVAPOSHTA_REF_UN_CITY">
+            <column name="ref"/>
+        </constraint>
+    </table>
+    <table name="code_custom_novaposhta_settlement" resource="default" engine="innodb" comment="Nova Poshta settlements">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="description_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="ref" nullable="true" length="255"/>
+        <column xsi:type="int" name="delivery_1" nullable="true"/>
+        <column xsi:type="int" name="delivery_2" nullable="true"/>
+        <column xsi:type="int" name="delivery_3" nullable="true"/>
+        <column xsi:type="int" name="delivery_4" nullable="true"/>
+        <column xsi:type="int" name="delivery_5" nullable="true"/>
+        <column xsi:type="int" name="delivery_6" nullable="true"/>
+        <column xsi:type="int" name="delivery_7" nullable="true"/>
+        <column xsi:type="varchar" name="area" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="area_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="area_description_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_type" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_type_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_type_description_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="latitude" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="longitude" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="region" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="regions_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="regions_description_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="index_1" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="index_2" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="index_coatsu_1" nullable="true" length="255"/>
+        <column xsi:type="int" name="special_cash_check" nullable="true"/>
+        <column xsi:type="varchar" name="warehouse" nullable="true" length="255"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="NOVAPOSHTA_REF_UN_SETTLEMENT">
+            <column name="ref"/>
+        </constraint>
+    </table>
+    <table name="code_custom_novaposhta_warehouse" resource="default" engine="innodb"
+           comment="Nova Poshta warehouses">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="site_key" nullable="true" length="50"/>
+        <column xsi:type="varchar" name="description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="description_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="short_address" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="short_address_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="phone" nullable="true" length="20"/>
+        <column xsi:type="varchar" name="type_of_warehouse" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="ref" nullable="true" length="255"/>
+        <column xsi:type="int" name="number" nullable="true"/>
+        <column xsi:type="varchar" name="city_ref" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="city_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="city_description_ru" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_ref" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_area_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_regions_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="settlement_type_description" nullable="true" length="255"/>
+        <column xsi:type="varchar" name="longitude" nullable="true" length="100"/>
+        <column xsi:type="varchar" name="latitude" nullable="true" length="100"/>
+        <column xsi:type="int" name="post_finance" nullable="true"/>
+        <column xsi:type="int" name="payment_access" nullable="true"/>
+        <column xsi:type="int" name="posterminal" nullable="true"/>
+        <column xsi:type="int" name="international_shipping" nullable="true"/>
+        <column xsi:type="int" name="total_max_weight_allowed" nullable="true"/>
+        <column xsi:type="int" name="place_max_weight_allowed" nullable="true"/>
+        <column xsi:type="mediumtext" name="reception" nullable="true"/>
+        <column xsi:type="mediumtext" name="delivery" nullable="true"/>
+        <column xsi:type="mediumtext" name="schedule" nullable="true"/>
+        <column xsi:type="varchar" name="category_of_warehouse" nullable="true" length="100"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="NOVAPOSHTA_REF_UN_WAREHOUSE">
+            <column name="ref"/>
+        </constraint>
+    </table>
+    <table name="quote_address">
+        <column xsi:type="varchar" name="novaposhta_city_ref" nullable="true" length="255" comment="NovaPoshta City Ref"/>
+        <column xsi:type="varchar" name="novaposhta_warehouse_ref" nullable="true" length="255" comment="NovaPoshta Warehouse Ref"/>
+    </table>
+</schema>
