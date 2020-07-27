@@ -10,7 +10,6 @@
             "email": "pankovych.v@gmail.com"
         }
     ],
-    "prefer-stable": true,
     "autoload": {
         "files": [
             "registration.php"
