@@ -9,6 +9,9 @@ use CodeCustom\NovaPoshta\Api\StreetRepositoryInterface;
 
 class Streets implements ResolverInterface
 {
+    /**
+     * @var StreetRepositoryInterface
+     */
     protected $streetRepository;
 
 
@@ -19,6 +22,14 @@ class Streets implements ResolverInterface
         $this->streetRepository = $streetRepository;
     }
 
+    /**
+     * @param Field $field
+     * @param \Magento\Framework\GraphQl\Query\Resolver\ContextInterface $context
+     * @param ResolveInfo $info
+     * @param array|null $value
+     * @param array|null $args
+     * @return \Magento\Framework\GraphQl\Query\Resolver\Value|mixed
+     */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
         return $this->streetRepository->getGraqhQlList($args['city'], $args['search']);

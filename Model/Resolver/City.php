@@ -1,27 +1,24 @@
 <?php
 
-
 namespace CodeCustom\NovaPoshta\Model\Resolver;
-
 
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use CodeCustom\NovaPoshta\Api\WarehouseRepositoryInterface;
+use CodeCustom\NovaPoshta\Api\CityRepositoryInterface;
 
-class Warehouse implements ResolverInterface
+class City implements ResolverInterface
 {
-
     /**
-     * @var WarehouseRepositoryInterface
+     * @var CityRepositoryInterface
      */
-    protected $warehouseRepository;
+    protected $cityRepository;
 
     public function __construct(
-        WarehouseRepositoryInterface $warehouseRepository
+        CityRepositoryInterface $cityRepository
     )
     {
-        $this->warehouseRepository = $warehouseRepository;
+        $this->cityRepository = $cityRepository;
     }
 
     /**
@@ -34,6 +31,7 @@ class Warehouse implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        return $this->warehouseRepository->getGraphQlList($args['city_ref'], $args['search']);
+        return $this->cityRepository->getGraphQlList(['description_ru' => $args['search']]);
     }
+
 }

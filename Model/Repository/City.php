@@ -73,6 +73,18 @@ class City implements CityRepositoryInterface
     public function getGraphQlList(array $params = [])
     {
         $collection = $this->cityCollectionFactory->create();
+
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                $collection->addFieldToFilter(
+                    [$key],
+                    [
+                        ['like' => '%' . $value . '%'],
+                    ]
+                );
+            }
+        }
+
         $data[] = ['name' => __('Choose city'), 'ref' => 0];
 
         if ($collection && $collection->getSize()) {

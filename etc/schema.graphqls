@@ -19,6 +19,7 @@ directive @resolver(class: String) on FIELD_DEFINITION
 directive @cache(cacheable: Boolean) on FIELD_DEFINITION
 
 type Query {
+    novaPoshtaCity(search: String): [NpCities] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\City")
     novaPoshtaWarehouse(city_ref: String!, search: String): [NpWareHouses] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Warehouse")
     googleStreets(city: String!, search: String!): [GglStreets] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Streets")
 }
