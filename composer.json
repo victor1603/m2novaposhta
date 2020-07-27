@@ -1,15 +1,15 @@
 {
-  "name": "codecustom/module-novaposhta",
-  "description": "Magento 2 module",
-  "version": "0.0.1",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "victorP",
-      "email": "pankovych.v@gmail.com"
-    }
-  ],
-    "minimum-stability": "stable",
+    "name": "codecustom/module-novaposhta",
+    "description": "Magento 2 module",
+    "type": "magento2-module",
+    "version": "1.0.2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "VictorPankovych",
+            "email": "pankovych.v@gmail.com"
+        }
+    ],
     "prefer-stable": true,
     "autoload": {
         "files": [
