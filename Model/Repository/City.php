@@ -50,17 +50,27 @@ class City implements CityRepositoryInterface
     }
 
     /**
-     * @param array $params
-     * @return array|mixed
+     * @param string $name
+     * @return false|mixed|string
      */
-    public function getList(array $params = [])
+    public function getList($name = '')
     {
         $collection = $this->cityCollectionFactory->create();
-        $data[] = ['label' => __('Choose city'), 'value' => 0];
+
+        if ($name) {
+            $collection->addFieldToFilter(
+                ['description_ru'],
+                [
+                    ['like' => $name . '%']
+                ]
+            );
+        }
+
+        $data[] = ['id' => 0, 'text' => __('Choose city')];
 
         if ($collection && $collection->getSize()) {
             foreach ($collection->getItems() as $item) {
-                $data[] = ['label' => $item->getDescriptionRu(), 'value' => $item->getRef()];
+                $data[] = ['id' => $item->getRef(), 'text' => $item->getDescriptionRu()];
             }
         }
         return json_encode($data);

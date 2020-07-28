@@ -64,7 +64,7 @@ class Warehouse implements WarehouseRepositoryInterface
                 ['eq' => $cityRef],
             ]
         );
-        $data[] = ['label' => __('Choose warehouse'), 'value' => 0];
+        $data[] = ['text' => __('Choose warehouse'), 'id' => 0];
 
         if ($collection && $collection->getSize()) {
             foreach ($collection->getItems() as $item) {

@@ -1,5 +1,5 @@
-<div style="margin-top: 0px;" class="warehouse input-block-level"
-data-bind="visible: selectedMethodCode()=='novaposhta_shipping_address'">
+<div style="margin-top: 0px;" class="warehouse input-block-level">
+    <label>Street</label>
     <select class="select" data-bind="
     attr: {
         name: inputName,
@@ -16,7 +16,7 @@ data-bind="visible: selectedMethodCode()=='novaposhta_shipping_address'">
     optionsCaption: caption,
     optionsValue: 'value',
     optionsText: 'label',
-    event: {change: test},
+    event: {change: userChanges},
     afterRender: function (element) {
             select2(element);
         },

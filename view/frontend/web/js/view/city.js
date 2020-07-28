@@ -5,6 +5,7 @@ define([
     'mage/url',
     'CodeCustom_NovaPoshta/js/model/city',
     'mage/translate',
+    'CodeCustom_NovaPoshta/js/lib/select2/select2'
 ], function ($, Select, quote, url, city) {
     'use strict';
     return Select.extend({
@@ -24,6 +25,47 @@ define([
             var that = this;
             this.loadData();
             return this;
+        },
+
+        select2: function (element) {
+            var that = this;
+            var cities = that.cities
+            $.fn.select2.amd.require(["select2/data/array", "select2/utils"],
+            function (ArrayData, Utils) {
+                function CustomData($element, options) {
+                    CustomData.__super__.constructor.call(this, $element, options);
+                }
+                Utils.Extend(CustomData, ArrayData);
+
+                CustomData.prototype.query = function (params, callback) {
+
+                    var pageSize = 50;
+                    var results = [];
+
+                    if (params.term && params.term !== '') {
+                        results = _.filter(cities, function(e) {
+                            return e.text != null ? e.text.toUpperCase().indexOf(params.term.toUpperCase()) >= 0 : false;
+                        });
+                    } else {
+                        results = cities;
+                    }
+
+                    if (!("page" in params)) {
+                        params.page = 1;
+                    }
+                    var data = {};
+                    data.results = results.slice((params.page - 1) * pageSize, params.page * pageSize);
+                    data.pagination = {};
+                    data.pagination.more = params.page * pageSize < results.length;
+                    callback(data);
+                };
+
+                $(element).select2({
+                    data: cities,
+                    ajax: {},
+                    dataAdapter: CustomData
+                });
+            })
         },
 
         initObservable: function () {
@@ -49,17 +91,17 @@ define([
             var method = quote.shippingMethod();
             var selectedMethodCode = method != null ? method.method_code : false;
 
-            if (selectedMethodCode === 'novaposhta_shipping_warehouse') {
-
+            if (selectedMethodCode === 'novaposhtashippingwarehouse') {
+                //alert($('.block_shipping_addr').html());
             }
             return selectedMethodCode;
         },
         onChangeElem: function (event) {
             var method = quote.shippingMethod();
             var selectedMethodCode = method != null ? method.method_code : false;
-
-            if (selectedMethodCode === 'novaposhta_shipping_warehouse') {
-                //city.getWarehouses();
+            alert(selectedMethodCode);
+            if (selectedMethodCode === 'novaposhtashippingwarehouse') {
+                city.getWarehouses();
             }
 
         },
@@ -76,7 +118,7 @@ define([
                 },
                 success : function (data) {
                     var items = JSON.parse(data);
-                    that.setOptions(items);
+                    that.cities = items;
                     return items;
                 }
             });

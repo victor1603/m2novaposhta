@@ -32,7 +32,7 @@ define([
                         var items = JSON.parse(data);
                         dropdown.html("");
                         $.each(items, function (key, entry) {
-                            dropdown.append($('<option></option>').attr('value', entry.value).text(entry.label));
+                            dropdown.append($('<option></option>').attr('value', entry.id).text(entry.text));
                         });
                         fullScreenLoader.stopLoader();
                     }

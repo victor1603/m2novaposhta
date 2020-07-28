@@ -37,10 +37,10 @@ interface CityRepositoryInterface
     public function save(CityInterface $city);
 
     /**
-     * @param array $params
+     * @param string $name
      * @return mixed
      */
-    public function getList(array $params = []);
+    public function getList(string $name = '');
 
     /**
      * @param array $params
