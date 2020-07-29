@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="codecustom" translate="label" sortOrder="1100000">
-            <label>CodeCustom</label>
+        <tab id="codecustom_tab" translate="label" sortOrder="1000001">
+            <label>Code custom</label>
         </tab>
         <section id="novaposhta_credentials" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Nova Poshta Sync Credentials</label>
-            <tab>codecustom</tab>
+            <label>Custom Shipping options</label>
+            <tab>codecustom_tab</tab>
             <resource>CodeCustom_NovaPoshta::config</resource>
             <group id="credentials" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Credentials</label>
+                <label>Nova Poshta API credentials</label>
                 <field id="api_key" translate="label" sortOrder="7" type="text" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>API Key</label>
                 </field>
@@ -18,7 +18,7 @@
                 </field>
             </group>
             <group id="sync" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Sync</label>
+                <label>Nova Poshta sync services</label>
                 <field id="sync_area" translate="label button_label" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="1">
                     <frontend_model>CodeCustom\NovaPoshta\Block\System\Config\Area</frontend_model>
                 </field>
