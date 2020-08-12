@@ -1,6 +1,5 @@
 <?php
 
-
 namespace CodeCustom\NovaPoshta\Controller\Adminhtml\System\Config;
 
 use CodeCustom\NovaPoshta\Model\Curl\Transport;

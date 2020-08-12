@@ -20,8 +20,9 @@ directive @cache(cacheable: Boolean) on FIELD_DEFINITION
 
 type Query {
     novaPoshtaCity(search: String): [NpCities] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\City")
+    novaPoshtaSettlement(search: String, only_warehause: Int): [NpCities] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Settlement")
     novaPoshtaWarehouse(city_ref: String!, search: String): [NpWareHouses] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Warehouse")
-    googleStreets(city: String!, search: String!): [GglStreets] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Streets")
+    novaPoshtaStreets(city_ref: String!, search: String!): [NpStreets] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Streets")
 }
 
 type SelectedShippingMethod {
@@ -36,6 +37,7 @@ type SelectedShippingMethodExtend {
 
 type CityView {
     input_view: Boolean
+    input_type: String
     input_data: [NpCities]
 }
 
@@ -59,6 +61,22 @@ type NpWareHouses {
     name: String
 }
 
+type NpStreets {
+    ref: String
+    name: String
+}
+
 type GglStreets {
     name: String
+}
+
+input PlaceOrderInput {
+    shipping_additional: ShippingAdditional
+}
+
+input ShippingAdditional {
+    city_ref: String
+    city_title: String
+    address_ref: String
+    address_title: String
 }

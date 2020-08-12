@@ -3,8 +3,9 @@ define([
     'Magento_Ui/js/form/element/select',
     'Magento_Checkout/js/model/quote',
     'Magento_Customer/js/model/address-list',
+    'CodeCustom_NovaPoshta/js/model/city',
     'mage/translate'
-], function ($, Select, quote, addressList) {
+], function ($, Select, quote, addressList, city) {
     'use strict';
 
 
@@ -35,11 +36,13 @@ define([
         selectedMethodCode: function () {
             var method = quote.shippingMethod();
             var selectedMethodCode = method != null ? method.method_code : false;
-
-            if (selectedMethodCode === 'novaposhta_shipping_warehouse') {
-
+            if (selectedMethodCode === 'novaposhtashippingkiev' ||
+                selectedMethodCode === 'novaposhtashippingwarehouse') {
+                alert(selectedMethodCode);
+                city.getWarehouses(selectedMethodCode);
+                return selectedMethodCode;
             }
-            return selectedMethodCode;
+            return '';
         },
 
         setDifferedFromDefault: function () {
@@ -58,11 +61,7 @@ define([
                     $("[name='novaposhta_warehouse_ref'] option:contains(" + street + ")").attr('selected', 'selected');
                 }
             }
-        },
-
-        loadData: function(element) {
-            console.log(this.options());
-        },
+        }
 
     });
 });

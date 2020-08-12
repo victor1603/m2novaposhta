@@ -73,7 +73,7 @@
                                                                     </item>
                                                                 </item>
                                                                 <item name="novaposhta-form-storage-street" xsi:type="array">
-                                                                    <item name="targetName" xsi:type="string">index = test</item>
+                                                                    <item name="targetName" xsi:type="string">index = novaposhta_street</item>
                                                                     <item name="component" xsi:type="string">CodeCustom_NovaPoshta/js/view/street</item>
                                                                     <item name="displayArea" xsi:type="string">novaposhta-checkout-form-fields-warehouse</item>
                                                                     <item name="sortOrder" xsi:type="string">3</item>

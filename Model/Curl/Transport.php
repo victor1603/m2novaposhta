@@ -49,7 +49,9 @@ class Transport
 
                 if (!empty($methodProperties)) {
                     foreach ($methodProperties as $key => $value) {
-                        $params['methodProperties'] = [$key => $value];
+                        if ($key) {
+                            $params['methodProperties'][$key] = $value;
+                        }
                     }
                 }
 

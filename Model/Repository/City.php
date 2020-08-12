@@ -10,6 +10,7 @@ use CodeCustom\NovaPoshta\Model\ResourceModel\City\CollectionFactory as CityColl
 
 class City implements CityRepositoryInterface
 {
+    const DESCFIELD                   = ['kiev' => 'Киев'];
     /**
      * @var CityResource
      */
@@ -74,6 +75,27 @@ class City implements CityRepositoryInterface
             }
         }
         return json_encode($data);
+    }
+
+    /**
+     * @param string $desc_ru
+     * @return mixed|void
+     */
+    public function getElement($lkey = '')
+    {
+        $result = [];
+        if ($lkey) {
+            $select = $this->cityResource->getConnection()
+                ->select()
+                ->from(
+                    $this->cityResource->getMainTable(),
+                    ['ref', 'description_ru']
+                )
+                ->where('description_ru = ?', self::DESCFIELD[$lkey]);
+            $result = $this->cityResource->getConnection()->fetchCol($select);
+        }
+
+        return json_encode($result);
     }
 
     /**
@@ -148,6 +170,28 @@ class City implements CityRepositoryInterface
         $object = $this->cityFactory->create();
         $this->cityResource->load($object, $value, $field);
         return $object;
+    }
+
+    /**
+     * @param string $lkey
+     * @return array|string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getElementKey($lkey = '')
+    {
+        $result = [];
+        if ($lkey) {
+            $select = $this->cityResource->getConnection()
+                ->select()
+                ->from(
+                    $this->cityResource->getMainTable(),
+                    ['ref', 'description_ru']
+                )
+                ->where('description_ru = ?', self::DESCFIELD[$lkey]);
+            $result = $this->cityResource->getConnection()->fetchOne($select);
+        }
+
+        return $result;
     }
 
 }

@@ -2,24 +2,20 @@
 
 namespace CodeCustom\NovaPoshta\Model\Resolver;
 
+use CodeCustom\NovaPoshta\Api\SettlementRepositoryInterface;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use CodeCustom\NovaPoshta\Api\StreetRepositoryInterface;
 
-class Streets implements ResolverInterface
+class Settlement implements ResolverInterface
 {
-    /**
-     * @var StreetRepositoryInterface
-     */
-    protected $streetRepository;
-
+    protected $settlementRepositoty;
 
     public function __construct(
-        StreetRepositoryInterface $streetRepository
+        SettlementRepositoryInterface $settlementRepository
     )
     {
-        $this->streetRepository = $streetRepository;
+        $this->settlementRepositoty = $settlementRepository;
     }
 
     /**
@@ -32,6 +28,13 @@ class Streets implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        return $this->streetRepository->getGraqhQlList($args['city_ref'], $args['search']);
+        if (isset($args['only_warehause']) && $args['only_warehause'] == 1) {
+            $result = $this->settlementRepositoty->getGraphQlList(['warehouse' => '1']);
+        } else {
+            $result = $this->settlementRepositoty->getGraphQlList(['description_ru' => $args['search']]);
+        }
+
+        return $result;
     }
+
 }

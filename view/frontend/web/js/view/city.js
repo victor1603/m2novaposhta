@@ -91,17 +91,18 @@ define([
             var method = quote.shippingMethod();
             var selectedMethodCode = method != null ? method.method_code : false;
 
-            if (selectedMethodCode === 'novaposhtashippingwarehouse') {
-                //alert($('.block_shipping_addr').html());
+            if (selectedMethodCode === 'novaposhtashippingkiev') {
+                //city.getWarehouses(selectedMethodCode);
             }
             return selectedMethodCode;
         },
         onChangeElem: function (event) {
             var method = quote.shippingMethod();
             var selectedMethodCode = method != null ? method.method_code : false;
-            alert(selectedMethodCode);
-            if (selectedMethodCode === 'novaposhtashippingwarehouse') {
-                city.getWarehouses();
+
+            if (selectedMethodCode === 'novaposhtashippingwarehouse' ||
+                selectedMethodCode === 'novaposhtashippingkiev') {
+                //city.getWarehouses(selectedMethodCode);
             }
 
         },

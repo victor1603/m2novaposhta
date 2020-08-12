@@ -49,6 +49,12 @@ interface CityRepositoryInterface
     public function getGraphQlList(array $params = []);
 
     /**
+     * @param string $desc_ru
+     * @return mixed
+     */
+    public function getElement(string $lkey = '');
+
+    /**
      * @param array $cities
      * @return mixed
      */
