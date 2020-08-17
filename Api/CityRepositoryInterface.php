@@ -40,7 +40,7 @@ interface CityRepositoryInterface
      * @param string $name
      * @return mixed
      */
-    public function getList(string $name = '');
+    public function getList($name = '');
 
     /**
      * @param array $params
@@ -52,7 +52,7 @@ interface CityRepositoryInterface
      * @param string $desc_ru
      * @return mixed
      */
-    public function getElement(string $lkey = '');
+    public function getElement($lkey = '');
 
     /**
      * @param array $cities

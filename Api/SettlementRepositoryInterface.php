@@ -48,7 +48,7 @@ interface SettlementRepositoryInterface
      * @param string $name
      * @return mixed
      */
-    public function getList(string $name = '');
+    public function getList($name = '');
 
     /**
      * @param array $params
