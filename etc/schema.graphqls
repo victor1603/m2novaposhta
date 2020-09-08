@@ -80,3 +80,8 @@ input ShippingAdditional {
     address_ref: String
     address_title: String
 }
+
+type AvailableShippingMethod {
+    enable_field: Boolean
+    shipping_desc: String
+}

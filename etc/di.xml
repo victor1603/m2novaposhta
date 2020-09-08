@@ -15,6 +15,17 @@
     </type>
 
     <type name="Magento\Checkout\Model\ShippingInformationManagement">
-        <plugin name="novaposhta_shipping_address" type="CodeCustom\NovaPoshta\Plugin\ShippingInformationManagementPlugin" sortOrder="1"/>
+        <plugin name="novaposhta_shipping_address"
+                type="CodeCustom\NovaPoshta\Plugin\ShippingInformationManagementPlugin"
+                sortOrder="1"/>
     </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Resolver\ShippingAddress\AvailableShippingMethods">
+        <plugin name="NpAvailableShippingMethods"
+                type="CodeCustom\NovaPoshta\Plugin\Resolver\AvailableShippingMethods"
+                sortOrder="15"
+                disabled="false"/>
+    </type>
+
+
 </config>
