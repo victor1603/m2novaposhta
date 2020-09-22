@@ -57,6 +57,12 @@
                     <label>Min order price</label>
                     <validate>validate-number</validate>
                 </field>
+                <field id="time_from" translate="label" type="time" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="6">
+                    <label>Time from</label>
+                </field>
+                <field id="time_to" translate="label" type="time" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="6">
+                    <label>Time to</label>
+                </field>
             </group>
             <group id="novaposhtashippingwarehouse" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Новая почта - доставка до отделения</label>

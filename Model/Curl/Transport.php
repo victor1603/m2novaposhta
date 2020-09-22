@@ -1,8 +1,6 @@
 <?php
 
-
 namespace CodeCustom\NovaPoshta\Model\Curl;
-
 
 use CodeCustom\NovaPoshta\Helper\Api\Config;
 use Magento\Framework\HTTP\Client\Curl;
@@ -21,6 +19,8 @@ class Transport
      * @var Curl
      */
     protected $curl;
+
+    private $retryConnect = 0;
 
 
     public function __construct(
@@ -56,11 +56,19 @@ class Transport
                 }
 
                 $this->curl->setHeaders([self::HEADER]);
+                $this->curl->setOption(CURLOPT_TIMEOUT, 6);
                 $this->curl->post($this->configHelper->getApiUrl(), json_encode($params));
                 $result = json_decode($this->curl->getBody(), true);
                 $resultData = isset($result['data']) ? $result['data'] : $result;
+                $this->retryConnect = 0;
             } catch (\Exception $exception) {
-                throw new \Exception($exception->getMessage(), $exception->getCode());
+                if ($this->retryConnect < 100) {
+                    $this->retryConnect++;
+                    $resultData = $this->loadApiData($modelName, $calledMethod, $methodProperties, $page);
+                } else {
+                    throw new \Exception($exception->getMessage(), $exception->getCode());
+                }
+
             }
         }
 

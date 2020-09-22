@@ -27,5 +27,12 @@
                 disabled="false"/>
     </type>
 
+    <type name="Magento\QuoteGraphQl\Model\Resolver\ShippingAddresses">
+        <plugin name="NpShippingAddresses"
+                type="CodeCustom\NovaPoshta\Plugin\Resolver\ShippingAddresses"
+                sortOrder="15"
+                disabled="false"/>
+    </type>
+
 
 </config>
