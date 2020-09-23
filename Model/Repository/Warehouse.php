@@ -119,6 +119,12 @@ class Warehouse implements WarehouseRepositoryInterface
         if (!empty($warehouses)) {
             foreach ($warehouses as $warehouseData) {
                 $warehouse = $this->getByField($warehouseData[self::NP_REF], self::NP_ENTITY_FIELD);
+                if ($warehouse->getRef() == $warehouseData[self::NP_REF] &&
+                    $warehouse->getDescription() == $warehouseData[self::NP_DESCRIPTION] &&
+                    $warehouse->getDescriptionRu() == $warehouseData[self::NP_DESCRIPTION_RU]) {
+                    continue;
+                }
+
                 $warehouse->setSiteKey($warehouseData[self::NP_SITE_KEY]);
                 $warehouse->setDescription($warehouseData[self::NP_DESCRIPTION]);
                 $warehouse->setDescriptionRu($warehouseData[self::NP_DESCRIPTION_RU]);

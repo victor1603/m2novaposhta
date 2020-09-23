@@ -3,6 +3,7 @@
 namespace CodeCustom\NovaPoshta\Model\Curl;
 
 use CodeCustom\NovaPoshta\Helper\Api\Config;
+use CodeCustom\NovaPoshta\Model\Repository\Settlement as SettlementRepository;
 use Magento\Framework\HTTP\Client\Curl;
 
 class Transport
@@ -56,7 +57,9 @@ class Transport
                 }
 
                 $this->curl->setHeaders([self::HEADER]);
-                $this->curl->setOption(CURLOPT_TIMEOUT, 6);
+                if ($calledMethod == SettlementRepository::NP_CALLED_METHOD) {
+                    $this->curl->setOption(CURLOPT_TIMEOUT, 8);
+                }
                 $this->curl->post($this->configHelper->getApiUrl(), json_encode($params));
                 $result = json_decode($this->curl->getBody(), true);
                 $resultData = isset($result['data']) ? $result['data'] : $result;
