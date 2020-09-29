@@ -59,16 +59,57 @@ class PlaceOrder
             $orderId = $resolvedValue['order']['order_number'];
             $order = $this->orderModel->loadByIncrementId($orderId);
             if ($order && $order->getId()) {
-                $order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
-                $order->getShippingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
-                $order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
-                $order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
-                $order->getShippingAddress()->save();
+                $this->setShippingAddress($order, $args);
+                $this->setBillingAddress($order, $args);
             }
         } catch (\Exception $e) {
             throw new \Exception(__($e->getMessage()));
         }
 
         return $resolvedValue;
+    }
+
+    /**
+     * @var Order $order
+     * @param null $order
+     * @param array $args
+     * @return bool
+     * @throws \Exception
+     */
+    public function setShippingAddress($order = null, $args = [])
+    {
+        try {
+            $order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
+            $order->getShippingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
+            $order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
+            $order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
+            $order->getShippingAddress()->save();
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
+        }
+
+        return true;
+    }
+
+    /**
+     * @var Order $order
+     * @param null $order
+     * @param array $args
+     * @return bool
+     * @throws \Exception
+     */
+    public function setBillingAddress($order = null, $args = [])
+    {
+        try {
+            $order->getBillingAddress()->setCity($args['input']['shipping_additional']['city_title']);
+            $order->getBillingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
+            $order->getBillingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
+            $order->getBillingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
+            $order->getBillingAddress()->save();
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
+        }
+
+        return true;
     }
 }
