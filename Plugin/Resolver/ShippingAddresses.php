@@ -58,11 +58,13 @@ class ShippingAddresses
     public function createEmptyShipping($shippingAddress, $cart)
     {
         try {
+            $firstName = $cart->getCustomerFirstname() ? $cart->getCustomerFirstname() : '_';
+            $lastName = $cart->getCustomerLastname() ? $cart->getCustomerLastname() : '_';
             $shippingAddress->setCountryId('UA');
             $shippingAddress->setCity('_');
             $shippingAddress->setStreet('_');
-            $shippingAddress->setFirstname($cart->getCustomerFirstname());
-            $shippingAddress->setLastname($cart->getCustomerLastname());
+            $shippingAddress->setFirstname($firstName);
+            $shippingAddress->setLastname($lastName);
             $shippingAddress->setTelephone('_');
             $address = $this->extractQuoteAddressData->execute($shippingAddress);
             $cart->save();
