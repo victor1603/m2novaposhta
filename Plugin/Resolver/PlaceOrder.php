@@ -90,6 +90,7 @@ class PlaceOrder
             $order->getShippingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
             $order->getShippingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
             $order->getShippingAddress()->save();
+            $order->save();
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
