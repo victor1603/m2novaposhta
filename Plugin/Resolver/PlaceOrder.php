@@ -80,6 +80,9 @@ class PlaceOrder
     {
         try {
             $order->addCommentToStatusHistory($args['input']['shipping_additional']['comment_ad']);
+            $order->setCustomerEmail($args['input']['shipping_additional']['email_ad']);
+            $order->setCustomerFirstname($args['input']['shipping_additional']['firstname_ad']);
+            $order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
 
             $order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
             $order->getShippingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
