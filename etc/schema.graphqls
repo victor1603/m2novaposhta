@@ -79,6 +79,12 @@ input ShippingAdditional {
     city_title: String
     address_ref: String
     address_title: String
+    firstname_ad: String
+    lastname_ad: String
+    email_ad: String
+    comment_ad: String
+    phone_ad: String
+    phone_customer_ad: String
 }
 
 type AvailableShippingMethod {

@@ -79,10 +79,16 @@ class PlaceOrder
     public function setShippingAddress($order = null, $args = [])
     {
         try {
+            $order->addCommentToStatusHistory($args['input']['shipping_additional']['comment_ad']);
+
             $order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
             $order->getShippingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
             $order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
             $order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
+            $order->getShippingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
+            $order->getShippingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
+            $order->getShippingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
+            $order->getShippingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
             $order->getShippingAddress()->save();
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
@@ -105,6 +111,14 @@ class PlaceOrder
             $order->getBillingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
             $order->getBillingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
             $order->getBillingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
+            $order->getBillingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
+            $order->getBillingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
+            $order->getBillingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
+            if ($args['input']['shipping_additional']['phone_customer_ad']) {
+                $order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_customer_ad']);
+            } else {
+                $order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
+            }
             $order->getBillingAddress()->save();
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
