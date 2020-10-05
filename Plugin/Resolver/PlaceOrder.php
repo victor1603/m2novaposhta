@@ -21,6 +21,12 @@ class PlaceOrder
     protected $orderModel;
 
 
+    /**
+     * @var Order
+     */
+    protected $order;
+
+
     public function __construct(
         PlaseOrderResolve $placeOrderResolve,
         Order $orderModel
@@ -57,10 +63,11 @@ class PlaceOrder
 
         try {
             $orderId = $resolvedValue['order']['order_number'];
-            $order = $this->orderModel->loadByIncrementId($orderId);
-            if ($order && $order->getId()) {
-                $this->setShippingAddress($order, $args);
-                $this->setBillingAddress($order, $args);
+            $this->order = $this->orderModel->loadByIncrementId($orderId);
+            if ($this->order && $this->order->getId()) {
+                $this->setShippingAddress($args);
+                $this->setBillingAddress($args);
+                $this->changeOrderCustomerData($args);
             }
         } catch (\Exception $e) {
             throw new \Exception(__($e->getMessage()));
@@ -76,24 +83,18 @@ class PlaceOrder
      * @return bool
      * @throws \Exception
      */
-    public function setShippingAddress($order = null, $args = [])
+    public function setShippingAddress($args = [])
     {
         try {
-            $order->addCommentToStatusHistory($args['input']['shipping_additional']['comment_ad']);
-            $order->setCustomerEmail($args['input']['shipping_additional']['email_ad']);
-            $order->setCustomerFirstname($args['input']['shipping_additional']['firstname_ad']);
-            $order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
-
-            $order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
-            $order->getShippingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
-            $order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
-            $order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
-            $order->getShippingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
-            $order->getShippingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
-            $order->getShippingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
-            $order->getShippingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
-            $order->getShippingAddress()->save();
-            $order->save();
+            $this->order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
+            $this->order->getShippingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
+            $this->order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
+            $this->order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
+            $this->order->getShippingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
+            $this->order->getShippingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
+            $this->order->getShippingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
+            $this->order->getShippingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
+            $this->order->getShippingAddress()->save();
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
@@ -108,22 +109,43 @@ class PlaceOrder
      * @return bool
      * @throws \Exception
      */
-    public function setBillingAddress($order = null, $args = [])
+    public function setBillingAddress($args = [])
     {
         try {
-            $order->getBillingAddress()->setCity($args['input']['shipping_additional']['city_title']);
-            $order->getBillingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
-            $order->getBillingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
-            $order->getBillingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
-            $order->getBillingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
-            $order->getBillingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
-            $order->getBillingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
+            $this->order->getBillingAddress()->setCity($args['input']['shipping_additional']['city_title']);
+            $this->order->getBillingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
+            $this->order->getBillingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
+            $this->order->getBillingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
+            $this->order->getBillingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
+            $this->order->getBillingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
+            $this->order->getBillingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
             if ($args['input']['shipping_additional']['phone_customer_ad']) {
-                $order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_customer_ad']);
+                $this->order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_customer_ad']);
             } else {
-                $order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
+                $this->order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
             }
-            $order->getBillingAddress()->save();
+            $this->order->getBillingAddress()->save();
+        } catch (\Exception $exception) {
+            throw new \Exception($exception->getMessage());
+        }
+
+        return true;
+    }
+
+
+    /**
+     * @var Order $order
+     * @param null $order
+     * @param array $args
+     */
+    public function changeOrderCustomerData($args = [])
+    {
+        try {
+            $this->order->addCommentToStatusHistory($args['input']['shipping_additional']['comment_ad']);
+            $this->order->setCustomerEmail($args['input']['shipping_additional']['email_ad']);
+            $this->order->setCustomerFirstname($args['input']['shipping_additional']['firstname_ad']);
+            $this->order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
+            $this->order->save();
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
         }
