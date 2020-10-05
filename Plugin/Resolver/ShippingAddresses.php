@@ -58,8 +58,9 @@ class ShippingAddresses
     public function createEmptyShipping($shippingAddress, $cart)
     {
         try {
-            $customEmail = time() . '@xxx.com';
-            if (!$cart->getCustomerId()) {
+            $customEmail = $cart->getCustomerEmail();
+            if (!$cart->getCustomerEmail()) {
+                $customEmail = time() . '@xxx.com';
                 $cart->setCustomerEmail($customEmail);
             }
             $firstName = $cart->getCustomerFirstname() ? $cart->getCustomerFirstname() : '_';
