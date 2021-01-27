@@ -65,14 +65,14 @@ class SelectedShippingMethod implements ResolverInterface
             $data = [
                 'input_view' => true,
                 //'input_type' => 'city',
-                'input_data' => $this->cityRepository->getGraphQlList()
+                'input_data' => $this->settlementRepository->getGraphQlList(['warehouse' => '1'])
             ];
         }
         if (NovaPoshtaAddress::CODE == $method) {
             $data = [
                 'input_view' => true,
                 //'input_type' => 'settlement',
-                'input_data' => $this->settlementRepository->getGraphQlList(['warehouse' => '1'])
+                'input_data' => $this->settlementRepository->getGraphQlList()
             ];
         }
         if (KievFast::CODE == $method

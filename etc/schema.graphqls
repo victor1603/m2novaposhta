@@ -21,8 +21,8 @@ directive @cache(cacheable: Boolean) on FIELD_DEFINITION
 type Query {
     novaPoshtaCity(search: String): [NpCities] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\City")
     novaPoshtaSettlement(search: String, only_warehause: Int): [NpCities] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Settlement")
-    novaPoshtaWarehouse(city_ref: String!, search: String): [NpWareHouses] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Warehouse")
-    novaPoshtaStreets(city_ref: String!, search: String!): [NpStreets] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Streets")
+    novaPoshtaWarehouse(settlement_ref: String!, search: String): [NpWareHouses] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Warehouse")
+    novaPoshtaStreets(settlement_ref: String!, search: String!): [NpStreets] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Streets")
 }
 
 type SelectedShippingMethod {

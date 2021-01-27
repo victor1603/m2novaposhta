@@ -60,6 +60,14 @@ interface WarehouseRepositoryInterface
      * @return mixed
      */
     public function getGraphQlList($cityRef = '', $search = '');
+
+    /**
+     * @param string $settlementRef
+     * @param string $search
+     * @return mixed
+     */
+    public function getGraphQlListBySettlementRef($settlementRef = '', $search = '');
+
     /**
      * @param array $warehouses
      * @return mixed

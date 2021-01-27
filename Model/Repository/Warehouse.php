@@ -111,6 +111,43 @@ class Warehouse implements WarehouseRepositoryInterface
     }
 
     /**
+     * Get all warehouse list by settlemet ref field
+     *
+     * @param string $settlementRef
+     * @param string $search
+     * @return array
+     */
+    public function getGraphQlListBySettlementRef($settlementRef = '', $search = '')
+    {
+        $collection = $this->warehouseCollectionFactory->create();
+        $collection->addFieldToFilter(
+            ['settlement_ref'],
+            [
+                ['eq' => $settlementRef],
+            ]
+        );
+
+        if ($search) {
+            $collection->addFieldToFilter(
+                ['description_ru'],
+                [
+                    ['like' => $search . '%'],
+                ]
+            );
+        }
+
+        $data[] = ['name' => __('Choose warehouse'), 'ref' => 0];
+
+        if ($collection && $collection->getSize()) {
+            foreach ($collection->getItems() as $item) {
+                $data[] = ['name' => $item->getDescriptionRu(), 'ref' => $item->getRef()];
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * @param array $warehouses
      * @return bool|mixed
      */
