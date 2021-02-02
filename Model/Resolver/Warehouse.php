@@ -34,6 +34,7 @@ class Warehouse implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        return $this->warehouseRepository->getGraphQlListBySettlementRef($args['settlement_ref'], $args['search']);
+        //return $this->warehouseRepository->getGraphQlListBySettlementRef($args['settlement_ref'], $args['search']);
+        return [];
     }
 }
