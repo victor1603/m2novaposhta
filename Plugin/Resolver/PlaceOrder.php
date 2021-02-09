@@ -90,10 +90,19 @@ class PlaceOrder
             $this->order->getShippingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
             $this->order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
             $this->order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
-            $this->order->getShippingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
-            $this->order->getShippingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
-            $this->order->getShippingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
-            $this->order->getShippingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
+            if (isset($args['input']['shipping_additional']['firstname_ad'])) {
+                $this->order->getShippingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
+            }
+            if (isset($args['input']['shipping_additional']['lastname_ad'])) {
+                $this->order->getShippingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
+            }
+            if (isset($args['input']['shipping_additional']['email_ad'])) {
+                $this->order->getShippingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
+            }
+            if (isset($args['input']['shipping_additional']['phone_ad'])) {
+                $this->order->getShippingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
+            }
+
             $this->order->getShippingAddress()->save();
         } catch (\Exception $exception) {
             throw new \Exception($exception->getMessage());
@@ -116,12 +125,20 @@ class PlaceOrder
             $this->order->getBillingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
             $this->order->getBillingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
             $this->order->getBillingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
-            $this->order->getBillingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
-            $this->order->getBillingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
-            $this->order->getBillingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
-            if ($args['input']['shipping_additional']['phone_customer_ad']) {
+
+            if (isset($args['input']['shipping_additional']['firstname_ad'])) {
+                $this->order->getBillingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
+            }
+            if (isset($args['input']['shipping_additional']['lastname_ad'])) {
+                $this->order->getBillingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
+            }
+            if (isset($args['input']['shipping_additional']['email_ad'])) {
+                $this->order->getBillingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
+            }
+            if (isset($args['input']['shipping_additional']['phone_customer_ad']) &&
+                $args['input']['shipping_additional']['phone_customer_ad']) {
                 $this->order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_customer_ad']);
-            } else {
+            } elseif (isset($args['input']['shipping_additional']['phone_ad'])) {
                 $this->order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
             }
             $this->order->getBillingAddress()->save();
@@ -147,7 +164,7 @@ class PlaceOrder
             $this->order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
             $this->order->save();
         } catch (\Exception $exception) {
-            throw new \Exception($exception->getMessage());
+            return false;
         }
 
         return true;
