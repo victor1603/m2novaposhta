@@ -145,4 +145,5 @@ type CustomCustomerAddress {
     apartment: String
     warehouse: String
     warehouse_ref: String
+    select_title: String
 }

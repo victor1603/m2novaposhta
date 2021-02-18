@@ -160,7 +160,7 @@ class SelectedShippingMethod implements ResolverInterface
         $data = [];
         if ($collection->getSize()) {
             foreach ($collection as $item) {
-                $data[] = $this->getData($item);
+                $data[] = $this->getData($item, $method);
             }
         }
         return $data;
@@ -171,8 +171,14 @@ class SelectedShippingMethod implements ResolverInterface
      *
      * @param $address Address
      */
-    public function getData($address)
+    public function getData($address, $method)
     {
+
+        $selectTitle = $method == NovaPoshtaWarehouse::CODE || $method == NovaPoshtaKiev::CODE
+            ? $address->getCity() . ', ' . $address->getData('novaposhta_warehouse_address')
+            : $address->getCity() . ', ' . $this->parseStreet($address)['street'] . ', '
+            . $this->parseStreet($address)['house'] . ', ' . $this->parseStreet($address)['apartment'];
+
         return [
             'address_id' => $address->getId(),
             'city' => $address->getCity(),
@@ -181,7 +187,8 @@ class SelectedShippingMethod implements ResolverInterface
             'house' => isset($this->parseStreet($address)['house']) ? $this->parseStreet($address)['house'] : "",
             'apartment' => isset($this->parseStreet($address)['apartment']) ? $this->parseStreet($address)['apartment'] : "",
             'warehouse' => $address->getData('novaposhta_warehouse_address'),
-            'warehouse_ref' => $address->getData('novaposhta_warehouse_ref')
+            'warehouse_ref' => $address->getData('novaposhta_warehouse_ref'),
+            'select_title' => $selectTitle
         ];
     }
 
@@ -194,7 +201,11 @@ class SelectedShippingMethod implements ResolverInterface
     private function parseStreet($address)
     {
         if(!isset($address->getStreet()[0])) {
-            return [];
+            return [
+                'street' => '',
+                'house' => '',
+                'apartment' => ''
+            ];
         }
         $parse = explode(',', $address->getStreet()[0]);
 
