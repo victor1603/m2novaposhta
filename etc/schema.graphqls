@@ -106,6 +106,7 @@ input ShippingAdditional {
     comment_ad: String
     phone_ad: String
     phone_customer_ad: String
+    customer_address_id: String
 }
 
 type AvailableShippingMethod {

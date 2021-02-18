@@ -2,11 +2,16 @@
 
 namespace CodeCustom\NovaPoshta\Plugin\Resolver;
 
+use CodeCustom\NovaPoshta\Model\Resolver\CreateCustomerAddress;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\QuoteGraphQl\Model\Resolver\PlaceOrder as PlaseOrderResolve;
 use Magento\Sales\Model\Order;
+use Magento\Customer\Api\Data\AddressInterfaceFactory;
+use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaWarehouse;
+use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaKiev;
+use Magento\Customer\Api\AddressRepositoryInterface;
 
 class PlaceOrder
 {
@@ -26,14 +31,28 @@ class PlaceOrder
      */
     protected $order;
 
+    /**
+     * @var AddressInterfaceFactory
+     */
+    protected $addressInterfaceFactory;
+
+    /**
+     * @var AddressRepositoryInterface
+     */
+    protected $addressRepository;
+
 
     public function __construct(
         PlaseOrderResolve $placeOrderResolve,
-        Order $orderModel
+        Order $orderModel,
+        AddressInterfaceFactory $addressInterfaceFactory,
+        AddressRepositoryInterface $addressRepository
     )
     {
         $this->placeOrderResolve = $placeOrderResolve;
         $this->orderModel = $orderModel;
+        $this->addressInterfaceFactory = $addressInterfaceFactory;
+        $this->addressRepository = $addressRepository;
     }
 
     /**
@@ -68,6 +87,9 @@ class PlaceOrder
                 $this->setShippingAddress($args);
                 $this->setBillingAddress($args);
                 $this->changeOrderCustomerData($args);
+                if($args['input']['shipping_additional']['customer_address_id'] == 'new') {
+                    $this->createCustomerAddress($args);
+                }
             }
         } catch (\Exception $e) {
             throw new \Exception(__($e->getMessage()));
@@ -169,4 +191,38 @@ class PlaceOrder
 
         return true;
     }
+
+    /**
+     * @param $order Order
+     * @param array $args
+     * @return false
+     */
+    public function createCustomerAddress($args = [])
+    {
+        if (!isset($args['input']['shipping_additional']['customer_address_id'])) {
+            return false;
+        }
+
+        $address = $this->addressInterfaceFactory->create();
+        $address->setFirstname($this->order->getCustomerFirstname())
+            ->setLastname($this->order->getCustomerLastname())
+            ->setCountryId(CreateCustomerAddress::DEFAULT_ADDRESS_COUNTRY_CODE)
+            ->setCity($args['input']['shipping_additional']['city_title'])
+            ->setCustomAttribute('novaposhta_city_ref', $args['input']['shipping_additional']['city_ref'])
+            ->setTelephone($this->order->getShippingAddress()->getTelephone())
+            ->setCustomerId($this->order->getCustomerId());
+        if ($this->order->getShippingMethod() == NovaPoshtaWarehouse::CODE
+            || $this->order->getShippingMethod() == NovaPoshtaKiev::CODE)
+        {
+            $address->setStreet([""])
+            ->setCustomAttribute('novaposhta_warehouse_ref', $args['input']['shipping_additional']['address_ref'])
+            ->setCustomAttribute('novaposhta_warehouse_address', $args['input']['shipping_additional']['address_title']);
+        } else {
+            $address->setStreet([$args['input']['shipping_additional']['address_title']])
+                ->setCustomAttribute('novaposhta_warehouse_ref', "")
+                ->setCustomAttribute('novaposhta_warehouse_address', "");
+        }
+        $this->addressRepository->save($address);
+    }
+
 }
