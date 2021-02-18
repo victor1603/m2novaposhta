@@ -19,10 +19,30 @@ directive @resolver(class: String) on FIELD_DEFINITION
 directive @cache(cacheable: Boolean) on FIELD_DEFINITION
 
 type Query {
-    novaPoshtaCity(search: String): [NpCities] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\City")
-    novaPoshtaSettlement(search: String, only_warehause: Int): [NpCities] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Settlement")
-    novaPoshtaWarehouse(settlement_ref: String!, search: String): [NpWareHouses] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Warehouse")
-    novaPoshtaStreets(settlement_ref: String!, search: String!): [NpStreets] @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Streets")
+    novaPoshtaCity(search: String): [NpCities]
+    @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\City")
+
+    novaPoshtaSettlement(search: String, only_warehause: Int): [NpCities]
+    @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Settlement")
+
+    novaPoshtaWarehouse(settlement_ref: String!, search: String): [NpWareHouses]
+    @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Warehouse")
+
+    novaPoshtaStreets(settlement_ref: String!, search: String!): [NpStreets]
+    @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Streets")
+
+    customcustomeraddresses(page: Int): CustomCustomerAddresses
+    @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\CustomerAddress")
+}
+
+type Mutation {
+    customcustomeraddress (input: CustomCustomerAddressInput!): CustomCustomerAddress
+    @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\CreateCustomerAddress")
+    @doc(description: "Create custom customer address")
+
+    removecustomeraddress (address_id: Int!): Boolean
+    @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\RemoveCustomerAddress")
+    @doc(description: "Remove address from DB")
 }
 
 type SelectedShippingMethod {
@@ -33,6 +53,7 @@ type SelectedShippingMethodExtend {
     city_view: CityView
     warehouse_view: WareHouseView
     street_view: StreetView
+    customer_address: [CustomCustomerAddress]
 }
 
 type CityView {
@@ -90,4 +111,38 @@ input ShippingAdditional {
 type AvailableShippingMethod {
     enable_field: Boolean
     shipping_desc: String
+}
+
+input CustomCustomerAddressInput {
+    address_id: Int
+    city: String!
+    city_ref: String!
+    street: String!
+    house: String!
+    apartment: String
+    warehouse: String!
+    warehouse_ref: String!
+}
+
+type CustomCustomerAddresses {
+    addresses: [CustomCustomerAddress] @doc(description: "Customer addresses")
+    total_count: Int
+    page_info: PageInfo
+}
+
+type PageInfo {
+    page_size: Int
+    current_page: Int
+    total_pages: Int
+}
+
+type CustomCustomerAddress {
+    address_id: Int
+    city: String
+    city_ref: String
+    street: String
+    house: String
+    apartment: String
+    warehouse: String
+    warehouse_ref: String
 }
