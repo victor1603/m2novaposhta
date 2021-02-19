@@ -25,7 +25,6 @@ class PlaceOrder
      */
     protected $orderModel;
 
-
     /**
      * @var Order
      */
@@ -41,7 +40,13 @@ class PlaceOrder
      */
     protected $addressRepository;
 
-
+    /**
+     * PlaceOrder constructor.
+     * @param PlaseOrderResolve $placeOrderResolve
+     * @param Order $orderModel
+     * @param AddressInterfaceFactory $addressInterfaceFactory
+     * @param AddressRepositoryInterface $addressRepository
+     */
     public function __construct(
         PlaseOrderResolve $placeOrderResolve,
         Order $orderModel,
@@ -87,7 +92,9 @@ class PlaceOrder
                 $this->setShippingAddress($args);
                 $this->setBillingAddress($args);
                 $this->changeOrderCustomerData($args);
-                if($args['input']['shipping_additional']['customer_address_id'] == 'new') {
+                if(isset($args['input']['shipping_additional']['customer_address_id'])
+                    && $args['input']['shipping_additional']['customer_address_id'] == 'new')
+                {
                     $this->createCustomerAddress($args);
                 }
             }
