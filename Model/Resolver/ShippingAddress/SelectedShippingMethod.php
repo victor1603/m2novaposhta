@@ -166,8 +166,10 @@ class SelectedShippingMethod implements ResolverInterface
                 ]);
         } else {
             $collection
-                ->addAttributeToFilter([
-                    ['attribute' => 'street', 'neq' => '-'],
+                ->addFieldToFilter([
+                    ['attribute' => 'street', 'neq' => '-']
+                ])
+                ->addFieldTofilter([
                     ['attribute' => 'street', 'neq' => '']
                 ]);
         }
