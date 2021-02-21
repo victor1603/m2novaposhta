@@ -221,13 +221,13 @@ class PlaceOrder
         if ($this->order->getShippingMethod() == NovaPoshtaWarehouse::CODE
             || $this->order->getShippingMethod() == NovaPoshtaKiev::CODE)
         {
-            $address->setStreet(["-"])
+            $address->setStreet(["-,-,-"])
             ->setCustomAttribute('novaposhta_warehouse_ref', $args['input']['shipping_additional']['address_ref'])
             ->setCustomAttribute('novaposhta_warehouse_address', $args['input']['shipping_additional']['address_title']);
         } else {
-            $address->setStreet([$args['input']['shipping_additional']['address_title']])
-                ->setCustomAttribute('novaposhta_warehouse_ref', "")
-                ->setCustomAttribute('novaposhta_warehouse_address', "");
+            $address->setStreet([$args['input']['shipping_additional']['address_title'] . ",-,-"])
+                ->setCustomAttribute('novaposhta_warehouse_ref', "-")
+                ->setCustomAttribute('novaposhta_warehouse_address', "-");
         }
         $this->addressRepository->save($address);
     }

@@ -157,6 +157,21 @@ class SelectedShippingMethod implements ResolverInterface
         $collection = $this->addressCollectionFactory->create();
         $collection->addAttributeToSelect('*')
             ->addAttributeToFilter(self::ONE_CITY_ATTR, [$operation => $this->oneCityRef]);
+
+        if ($method == NovaPoshtaWarehouse::CODE || $method == NovaPoshtaKiev::CODE) {
+            $collection
+                ->addAttributeToFilter([
+                    ['attribute' => 'novaposhta_warehouse_address', 'neq' => '-'],
+                    ['attribute' => 'novaposhta_warehouse_address', 'neq' => '']
+                ]);
+        } else {
+            $collection
+                ->addAttributeToFilter([
+                    ['attribute' => 'street', 'neq' => '-'],
+                    ['attribute' => 'street', 'neq' => '']
+                ]);
+        }
+
         $data = [];
         if ($collection->getSize()) {
             foreach ($collection as $item) {
