@@ -161,7 +161,9 @@ class SelectedShippingMethod implements ResolverInterface
         if ($method == NovaPoshtaWarehouse::CODE || $method == NovaPoshtaKiev::CODE) {
             $collection
                 ->addAttributeToFilter([
-                    ['attribute' => 'novaposhta_warehouse_address', 'neq' => '-'],
+                    ['attribute' => 'novaposhta_warehouse_address', 'neq' => '-']
+                ])
+                ->addAttributeToFilter([
                     ['attribute' => 'novaposhta_warehouse_address', 'neq' => '']
                 ]);
         } else {
