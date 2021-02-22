@@ -5,6 +5,7 @@ namespace CodeCustom\NovaPoshta\Model\Resolver\ShippingAddress;
 use CodeCustom\NovaPoshta\Api\SettlementRepositoryInterface;
 use Magento\Customer\Model\Address;
 use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaWarehouse;
@@ -23,18 +24,43 @@ class SelectedShippingMethod implements ResolverInterface
 
     const ONE_CITY_ATTR = 'novaposhta_city_ref';
 
+    /**
+     * @var CityRepositoryInterface
+     */
     protected $cityRepository;
 
+    /**
+     * @var SettlementRepositoryInterface
+     */
     protected $settlementRepository;
 
+    /**
+     * @var WarehouseRepositoryInterface
+     */
     protected $warehouseRepository;
 
+    /**
+     * @var AddressCollectionFactory
+     */
     protected $addressCollectionFactory;
 
+    /**
+     * @var string
+     */
     protected $oneCityTitle = "kiev";
 
+    /**
+     * @var string
+     */
     protected $oneCityRef = "e718a680-4b33-11e4-ab6d-005056801329";
 
+    /**
+     * SelectedShippingMethod constructor.
+     * @param CityRepositoryInterface $cityRepository
+     * @param SettlementRepositoryInterface $settlementRepository
+     * @param WarehouseRepositoryInterface $warehouseRepository
+     * @param AddressCollectionFactory $addressCollectionFactory
+     */
     public function __construct(
         CityRepositoryInterface $cityRepository,
         SettlementRepositoryInterface $settlementRepository,
@@ -48,8 +74,21 @@ class SelectedShippingMethod implements ResolverInterface
         $this->addressCollectionFactory = $addressCollectionFactory;
     }
 
+    /**
+     * @param Field $field
+     * @param \Magento\Framework\GraphQl\Query\Resolver\ContextInterface $context
+     * @param ResolveInfo $info
+     * @param array|null $value
+     * @param array|null $args
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
+        if (false === $context->getExtensionAttributes()->getIsCustomer()) {
+            throw new GraphQlAuthorizationException(__('The current customer isn\'t authorized.'));
+        }
+
         $method_code = isset($value['method_code']) ? $value['method_code'] : null;
         $kievCityRef = $this->cityRepository->getElementKey($this->oneCityTitle);
         $kievSettlementRef = $this->settlementRepository->getElementKey($this->oneCityTitle);
@@ -57,7 +96,7 @@ class SelectedShippingMethod implements ResolverInterface
             'city_view' => $this->getCityView($method_code, $kievCityRef, $kievSettlementRef),
             'warehouse_view' => $this->getWarehouseView($method_code, $kievCityRef),
             'street_view' => $this->getStreetView($method_code),
-            'customer_address' => $this->getCustomerAddresses($method_code)
+            'customer_address' => $this->getCustomerAddresses($method_code, $context->getUserId())
         ];
     }
 
@@ -108,6 +147,11 @@ class SelectedShippingMethod implements ResolverInterface
         return $data;
     }
 
+    /**
+     * @param $method
+     * @param $cityRef
+     * @return array
+     */
     protected function getWarehouseView($method, $cityRef)
     {
         $data = [
@@ -132,6 +176,10 @@ class SelectedShippingMethod implements ResolverInterface
         return $data;
     }
 
+    /**
+     * @param $method
+     * @return array
+     */
     protected function getStreetView($method)
     {
         $data = [
@@ -150,12 +198,18 @@ class SelectedShippingMethod implements ResolverInterface
         return $data;
     }
 
-    protected function getCustomerAddresses($method)
+    /**
+     * @param $method
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    protected function getCustomerAddresses($method, $customerId = null)
     {
         $operation = NovaPoshtaKiev::CODE == $method || KievFast::CODE == $method || KievStandard::CODE == $method
             ? 'eq' : 'neq';
         $collection = $this->addressCollectionFactory->create();
         $collection->addAttributeToSelect('*')
+            ->addFieldToFilter('parent_id', ['eq' => $customerId])
             ->addAttributeToFilter(self::ONE_CITY_ATTR, [$operation => $this->oneCityRef]);
 
         if ($method == NovaPoshtaWarehouse::CODE || $method == NovaPoshtaKiev::CODE) {
