@@ -12,6 +12,7 @@ use Magento\Customer\Api\Data\AddressInterfaceFactory;
 use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaWarehouse;
 use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaKiev;
 use Magento\Customer\Api\AddressRepositoryInterface;
+use Magento\Sales\Api\OrderManagementInterface;
 
 class PlaceOrder
 {
@@ -41,6 +42,11 @@ class PlaceOrder
     protected $addressRepository;
 
     /**
+     * @var OrderManagementInterface
+     */
+    protected $orderManagment;
+
+    /**
      * PlaceOrder constructor.
      * @param PlaseOrderResolve $placeOrderResolve
      * @param Order $orderModel
@@ -51,13 +57,15 @@ class PlaceOrder
         PlaseOrderResolve $placeOrderResolve,
         Order $orderModel,
         AddressInterfaceFactory $addressInterfaceFactory,
-        AddressRepositoryInterface $addressRepository
+        AddressRepositoryInterface $addressRepository,
+        OrderManagementInterface $orderManagement
     )
     {
         $this->placeOrderResolve = $placeOrderResolve;
         $this->orderModel = $orderModel;
         $this->addressInterfaceFactory = $addressInterfaceFactory;
         $this->addressRepository = $addressRepository;
+        $this->orderManagment = $orderManagement;
     }
 
     /**
@@ -99,6 +107,7 @@ class PlaceOrder
                 }
             }
         } catch (\Exception $e) {
+            $this->orderManagment->cancel($this->order->getId());
             throw new \Exception(__($e->getMessage()));
         }
 
@@ -134,6 +143,7 @@ class PlaceOrder
 
             $this->order->getShippingAddress()->save();
         } catch (\Exception $exception) {
+            $this->orderManagment->cancel($this->order->getId());
             throw new \Exception($exception->getMessage());
         }
 
@@ -172,6 +182,7 @@ class PlaceOrder
             }
             $this->order->getBillingAddress()->save();
         } catch (\Exception $exception) {
+            $this->orderManagment->cancel($this->order->getId());
             throw new \Exception($exception->getMessage());
         }
 
@@ -193,6 +204,7 @@ class PlaceOrder
             $this->order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
             $this->order->save();
         } catch (\Exception $exception) {
+            $this->orderManagment->cancel($this->order->getId());
             return false;
         }
 
