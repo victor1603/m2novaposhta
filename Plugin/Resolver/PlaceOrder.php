@@ -13,6 +13,7 @@ use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaWarehouse;
 use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaKiev;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Sales\Api\OrderManagementInterface;
+use Magento\Sales\Model\OrderRepository;
 
 class PlaceOrder
 {
@@ -46,6 +47,8 @@ class PlaceOrder
      */
     protected $orderManagment;
 
+    protected $orderRepository;
+
     /**
      * PlaceOrder constructor.
      * @param PlaseOrderResolve $placeOrderResolve
@@ -58,7 +61,8 @@ class PlaceOrder
         Order $orderModel,
         AddressInterfaceFactory $addressInterfaceFactory,
         AddressRepositoryInterface $addressRepository,
-        OrderManagementInterface $orderManagement
+        OrderManagementInterface $orderManagement,
+        OrderRepository $orderRepository
     )
     {
         $this->placeOrderResolve = $placeOrderResolve;
@@ -66,6 +70,7 @@ class PlaceOrder
         $this->addressInterfaceFactory = $addressInterfaceFactory;
         $this->addressRepository = $addressRepository;
         $this->orderManagment = $orderManagement;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -108,6 +113,7 @@ class PlaceOrder
             }
         } catch (\Exception $e) {
             $this->orderManagment->cancel($this->order->getId());
+            $this->orderRepository->deleteById($this->order->getId());
             throw new \Exception(__($e->getMessage()));
         }
 
@@ -144,6 +150,7 @@ class PlaceOrder
             $this->order->getShippingAddress()->save();
         } catch (\Exception $exception) {
             $this->orderManagment->cancel($this->order->getId());
+            $this->orderRepository->deleteById($this->order->getId());
             throw new \Exception($exception->getMessage());
         }
 
@@ -183,6 +190,7 @@ class PlaceOrder
             $this->order->getBillingAddress()->save();
         } catch (\Exception $exception) {
             $this->orderManagment->cancel($this->order->getId());
+            $this->orderRepository->deleteById($this->order->getId());
             throw new \Exception($exception->getMessage());
         }
 
@@ -205,6 +213,7 @@ class PlaceOrder
             $this->order->save();
         } catch (\Exception $exception) {
             $this->orderManagment->cancel($this->order->getId());
+            $this->orderRepository->deleteById($this->order->getId());
             return false;
         }
 
