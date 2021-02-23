@@ -131,7 +131,7 @@ class PlaceOrder
     {
         try {
             $this->order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
-            $this->order->getShippingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
+            $this->order->getShippingAddress()->setStreet($this->getStreet($args));
             $this->order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
             $this->order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
             if (isset($args['input']['shipping_additional']['firstname_ad'])) {
@@ -168,7 +168,7 @@ class PlaceOrder
     {
         try {
             $this->order->getBillingAddress()->setCity($args['input']['shipping_additional']['city_title']);
-            $this->order->getBillingAddress()->setStreet($args['input']['shipping_additional']['address_title']);
+            $this->order->getBillingAddress()->setStreet($this->getStreet($args));
             $this->order->getBillingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
             $this->order->getBillingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
 
@@ -246,11 +246,30 @@ class PlaceOrder
             ->setCustomAttribute('novaposhta_warehouse_ref', $args['input']['shipping_additional']['address_ref'])
             ->setCustomAttribute('novaposhta_warehouse_address', $args['input']['shipping_additional']['address_title']);
         } else {
-            $address->setStreet([$args['input']['shipping_additional']['address_title'] . ",-,-"])
+            $address->setStreet([$this->getStreet($args)])
                 ->setCustomAttribute('novaposhta_warehouse_ref', "-")
                 ->setCustomAttribute('novaposhta_warehouse_address', "-");
         }
         $this->addressRepository->save($address);
+    }
+
+    /**
+     * Helper method
+     *
+     * @param array $args
+     * @return string
+     */
+    private function getStreet($args = [])
+    {
+        if (isset($args['input']['shipping_additional']['apartment'])
+            && $args['input']['shipping_additional']['apartment']) {
+            return $args['input']['shipping_additional']['address_title']
+                . ',' . $args['input']['shipping_additional']['house']
+                . ',' . $args['input']['shipping_additional']['apartment'];
+        }
+
+        return $args['input']['shipping_additional']['address_title']
+            . ',' . $args['input']['shipping_additional']['house'];
     }
 
 }

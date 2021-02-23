@@ -106,6 +106,8 @@ input ShippingAdditional {
     comment_ad: String
     phone_ad: String
     phone_customer_ad: String
+    house: String
+    apartment: String
     customer_address_id: String
 }
 
