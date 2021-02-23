@@ -113,7 +113,7 @@ class PlaceOrder
             }
         } catch (\Exception $e) {
             $this->orderManagment->cancel($this->order->getId());
-            $this->orderRepository->deleteById($this->order->getId());
+            $this->orderRepository->delete($this->order);
             throw new \Exception(__($e->getMessage()));
         }
 
