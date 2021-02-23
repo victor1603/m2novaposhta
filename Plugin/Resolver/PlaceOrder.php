@@ -14,6 +14,7 @@ use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaKiev;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Sales\Model\OrderRepository;
+use Magento\Framework\Registry;
 
 class PlaceOrder
 {
@@ -47,7 +48,15 @@ class PlaceOrder
      */
     protected $orderManagment;
 
+    /**
+     * @var OrderRepository
+     */
     protected $orderRepository;
+
+    /**
+     * @var Registry
+     */
+    protected $registry;
 
     /**
      * PlaceOrder constructor.
@@ -62,7 +71,8 @@ class PlaceOrder
         AddressInterfaceFactory $addressInterfaceFactory,
         AddressRepositoryInterface $addressRepository,
         OrderManagementInterface $orderManagement,
-        OrderRepository $orderRepository
+        OrderRepository $orderRepository,
+        Registry $registry
     )
     {
         $this->placeOrderResolve = $placeOrderResolve;
@@ -71,6 +81,7 @@ class PlaceOrder
         $this->addressRepository = $addressRepository;
         $this->orderManagment = $orderManagement;
         $this->orderRepository = $orderRepository;
+        $this->registry = $registry;
     }
 
     /**
@@ -112,8 +123,10 @@ class PlaceOrder
                 }
             }
         } catch (\Exception $e) {
+            $this->registry->register('isSecureArea', true);
             $this->orderManagment->cancel($this->order->getId());
-            $this->orderRepository->delete($this->order);
+            $this->orderRepository->deleteById($this->order->getId());
+            $this->registry->unregister('isSecureArea');
             throw new \Exception(__($e->getMessage()));
         }
 
