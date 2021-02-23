@@ -129,30 +129,23 @@ class PlaceOrder
      */
     public function setShippingAddress($args = [])
     {
-        try {
-            $this->order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
-            $this->order->getShippingAddress()->setStreet($this->getStreet($args));
-            $this->order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
-            $this->order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
-            if (isset($args['input']['shipping_additional']['firstname_ad'])) {
-                $this->order->getShippingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
-            }
-            if (isset($args['input']['shipping_additional']['lastname_ad'])) {
-                $this->order->getShippingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
-            }
-            if (isset($args['input']['shipping_additional']['email_ad'])) {
-                $this->order->getShippingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
-            }
-            if (isset($args['input']['shipping_additional']['phone_ad'])) {
-                $this->order->getShippingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
-            }
-
-            $this->order->getShippingAddress()->save();
-        } catch (\Exception $exception) {
-            $this->orderManagment->cancel($this->order->getId());
-            $this->orderRepository->deleteById($this->order->getId());
-            throw new \Exception($exception->getMessage());
+        $this->order->getShippingAddress()->setCity($args['input']['shipping_additional']['city_title']);
+        $this->order->getShippingAddress()->setStreet($this->getStreet($args));
+        $this->order->getShippingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
+        $this->order->getShippingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
+        if (isset($args['input']['shipping_additional']['firstname_ad'])) {
+            $this->order->getShippingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
         }
+        if (isset($args['input']['shipping_additional']['lastname_ad'])) {
+            $this->order->getShippingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
+        }
+        if (isset($args['input']['shipping_additional']['email_ad'])) {
+            $this->order->getShippingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
+        }
+        if (isset($args['input']['shipping_additional']['phone_ad'])) {
+            $this->order->getShippingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
+        }
+        $this->order->getShippingAddress()->save();
 
         return true;
     }
@@ -166,33 +159,27 @@ class PlaceOrder
      */
     public function setBillingAddress($args = [])
     {
-        try {
-            $this->order->getBillingAddress()->setCity($args['input']['shipping_additional']['city_title']);
-            $this->order->getBillingAddress()->setStreet($this->getStreet($args));
-            $this->order->getBillingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
-            $this->order->getBillingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
+        $this->order->getBillingAddress()->setCity($args['input']['shipping_additional']['city_title']);
+        $this->order->getBillingAddress()->setStreet($this->getStreet($args));
+        $this->order->getBillingAddress()->setNovaposhtaCityRef($args['input']['shipping_additional']['city_ref']);
+        $this->order->getBillingAddress()->setNovaposhtaWarehouseRef($args['input']['shipping_additional']['address_ref']);
 
-            if (isset($args['input']['shipping_additional']['firstname_ad'])) {
-                $this->order->getBillingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
-            }
-            if (isset($args['input']['shipping_additional']['lastname_ad'])) {
-                $this->order->getBillingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
-            }
-            if (isset($args['input']['shipping_additional']['email_ad'])) {
-                $this->order->getBillingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
-            }
-            if (isset($args['input']['shipping_additional']['phone_customer_ad']) &&
-                $args['input']['shipping_additional']['phone_customer_ad']) {
-                $this->order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_customer_ad']);
-            } elseif (isset($args['input']['shipping_additional']['phone_ad'])) {
-                $this->order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
-            }
-            $this->order->getBillingAddress()->save();
-        } catch (\Exception $exception) {
-            $this->orderManagment->cancel($this->order->getId());
-            $this->orderRepository->deleteById($this->order->getId());
-            throw new \Exception($exception->getMessage());
+        if (isset($args['input']['shipping_additional']['firstname_ad'])) {
+            $this->order->getBillingAddress()->setFirstname($args['input']['shipping_additional']['firstname_ad']);
         }
+        if (isset($args['input']['shipping_additional']['lastname_ad'])) {
+            $this->order->getBillingAddress()->setLastname($args['input']['shipping_additional']['lastname_ad']);
+        }
+        if (isset($args['input']['shipping_additional']['email_ad'])) {
+            $this->order->getBillingAddress()->setEmail($args['input']['shipping_additional']['email_ad']);
+        }
+        if (isset($args['input']['shipping_additional']['phone_customer_ad']) &&
+            $args['input']['shipping_additional']['phone_customer_ad']) {
+            $this->order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_customer_ad']);
+        } elseif (isset($args['input']['shipping_additional']['phone_ad'])) {
+            $this->order->getBillingAddress()->setTelephone($args['input']['shipping_additional']['phone_ad']);
+        }
+        $this->order->getBillingAddress()->save();
 
         return true;
     }
@@ -205,17 +192,11 @@ class PlaceOrder
      */
     public function changeOrderCustomerData($args = [])
     {
-        try {
-            $this->order->addCommentToStatusHistory($args['input']['shipping_additional']['comment_ad']);
-            $this->order->setCustomerEmail($args['input']['shipping_additional']['email_ad']);
-            $this->order->setCustomerFirstname($args['input']['shipping_additional']['firstname_ad']);
-            $this->order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
-            $this->order->save();
-        } catch (\Exception $exception) {
-            $this->orderManagment->cancel($this->order->getId());
-            $this->orderRepository->deleteById($this->order->getId());
-            return false;
-        }
+        $this->order->addCommentToStatusHistory($args['input']['shipping_additional']['comment_ad']);
+        $this->order->setCustomerEmail($args['input']['shipping_additional']['email_ad']);
+        $this->order->setCustomerFirstname($args['input']['shipping_additional']['firstname_ad']);
+        $this->order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
+        $this->order->save();
 
         return true;
     }
