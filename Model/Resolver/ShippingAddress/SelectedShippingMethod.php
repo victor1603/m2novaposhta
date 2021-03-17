@@ -85,10 +85,6 @@ class SelectedShippingMethod implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        if (false === $context->getExtensionAttributes()->getIsCustomer()) {
-            throw new GraphQlAuthorizationException(__('The current customer isn\'t authorized.'));
-        }
-
         $method_code = isset($value['method_code']) ? $value['method_code'] : null;
         $kievCityRef = $this->cityRepository->getElementKey($this->oneCityTitle);
         $kievSettlementRef = $this->settlementRepository->getElementKey($this->oneCityTitle);
@@ -205,6 +201,9 @@ class SelectedShippingMethod implements ResolverInterface
      */
     protected function getCustomerAddresses($method, $customerId = null)
     {
+        if (!$customerId) {
+            return null;
+        }
         $operation = NovaPoshtaKiev::CODE == $method || KievFast::CODE == $method || KievStandard::CODE == $method
             ? 'eq' : 'neq';
         $collection = $this->addressCollectionFactory->create();
