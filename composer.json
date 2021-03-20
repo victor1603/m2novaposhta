@@ -2,7 +2,7 @@
     "name": "codecustom/module-novaposhta",
     "description": "Magento 2 module",
     "type": "magento2-module",
-    "version": "dev-develop",
+    "version": "1.0",
     "license": "MIT",
     "authors": [
         {
