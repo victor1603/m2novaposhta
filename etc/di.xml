@@ -5,7 +5,34 @@
     <preference for="CodeCustom\NovaPoshta\Api\CityRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\City" />
     <preference for="CodeCustom\NovaPoshta\Api\WarehouseRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\Warehouse" />
     <preference for="CodeCustom\NovaPoshta\Api\StreetRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\Street" />
-    <type name="Magento\Checkout\Model\ShippingInformationManagement">
-        <plugin name="novaposhta_shipping_address" type="CodeCustom\NovaPoshta\Plugin\ShippingInformationManagementPlugin" sortOrder="1"/>
+    <preference for="CodeCustom\NovaPoshta\Api\SettlementRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\Settlement" />
+
+    <type name="Magento\QuoteGraphQl\Model\Resolver\PlaceOrder">
+        <plugin name="NpPlaceOrderResolver"
+                type="CodeCustom\NovaPoshta\Plugin\Resolver\PlaceOrder"
+                sortOrder="16"
+                disabled="false"/>
     </type>
+
+    <type name="Magento\Checkout\Model\ShippingInformationManagement">
+        <plugin name="novaposhta_shipping_address"
+                type="CodeCustom\NovaPoshta\Plugin\ShippingInformationManagementPlugin"
+                sortOrder="1"/>
+    </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Resolver\ShippingAddress\AvailableShippingMethods">
+        <plugin name="NpAvailableShippingMethods"
+                type="CodeCustom\NovaPoshta\Plugin\Resolver\AvailableShippingMethods"
+                sortOrder="15"
+                disabled="false"/>
+    </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Resolver\ShippingAddresses">
+        <plugin name="NpShippingAddresses"
+                type="CodeCustom\NovaPoshta\Plugin\Resolver\ShippingAddresses"
+                sortOrder="15"
+                disabled="false"/>
+    </type>
+
+
 </config>

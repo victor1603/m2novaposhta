@@ -1,10 +1,9 @@
 <?php
 
-
 namespace CodeCustom\NovaPoshta\Model\Curl;
 
-
 use CodeCustom\NovaPoshta\Helper\Api\Config;
+use CodeCustom\NovaPoshta\Model\Repository\Settlement as SettlementRepository;
 use Magento\Framework\HTTP\Client\Curl;
 
 class Transport
@@ -21,6 +20,8 @@ class Transport
      * @var Curl
      */
     protected $curl;
+
+    private $retryConnect = 0;
 
 
     public function __construct(
@@ -49,16 +50,28 @@ class Transport
 
                 if (!empty($methodProperties)) {
                     foreach ($methodProperties as $key => $value) {
-                        $params['methodProperties'] = [$key => $value];
+                        if ($key) {
+                            $params['methodProperties'][$key] = $value;
+                        }
                     }
                 }
 
                 $this->curl->setHeaders([self::HEADER]);
+                if ($calledMethod == SettlementRepository::NP_CALLED_METHOD) {
+                    $this->curl->setOption(CURLOPT_TIMEOUT, 8);
+                }
                 $this->curl->post($this->configHelper->getApiUrl(), json_encode($params));
                 $result = json_decode($this->curl->getBody(), true);
                 $resultData = isset($result['data']) ? $result['data'] : $result;
+                $this->retryConnect = 0;
             } catch (\Exception $exception) {
-                throw new \Exception($exception->getMessage(), $exception->getCode());
+                if ($this->retryConnect < 100) {
+                    $this->retryConnect++;
+                    $resultData = $this->loadApiData($modelName, $calledMethod, $methodProperties, $page);
+                } else {
+                    throw new \Exception($exception->getMessage(), $exception->getCode());
+                }
+
             }
         }
 

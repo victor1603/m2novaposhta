@@ -123,4 +123,8 @@
         <column xsi:type="varchar" name="novaposhta_city_ref" nullable="true" length="255" comment="NovaPoshta City Ref"/>
         <column xsi:type="varchar" name="novaposhta_warehouse_ref" nullable="true" length="255" comment="NovaPoshta Warehouse Ref"/>
     </table>
+    <table name="sales_order_address">
+        <column xsi:type="varchar" name="novaposhta_city_ref" nullable="true" length="255" comment="NovaPoshta City Ref"/>
+        <column xsi:type="varchar" name="novaposhta_warehouse_ref" nullable="true" length="255" comment="NovaPoshta Warehouse Ref"/>
+    </table>
 </schema>

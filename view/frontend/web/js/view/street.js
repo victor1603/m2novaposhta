@@ -30,12 +30,8 @@ define([
 
         select2: function (element) {
             var lang = "ru";
-            if ($('html').attr('lang') == "uk") {
-                lang = "uk";
-            }
-            ;
             $(element).select2({
-                placeholder: $.mage.__('select city'),
+                placeholder: $.mage.__('select street'),
                 dropdownAutoWidth: true,
                 width: $(element).parent().width().toString() + 'px',
                 minimumInputLength: 2,
@@ -61,10 +57,6 @@ define([
             var selectedMethodCode = method != null ? method.method_code : false;
 
             return selectedMethodCode;
-        },
-
-        test: function () {
-            alert('1');
         }
 
     });

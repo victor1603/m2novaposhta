@@ -11,9 +11,17 @@ define([
     'jquery/ui',
 ], function ($, urlBuilder, storage, registry, addressList, quote, url,fullScreenLoader) {
     'use strict';
+
+    let cityChoosen = 'kiev';
+
     return {
-        getWarehouses: function () {
-            var cityRef = $('select[name=novaposhta_city_ref]').val();
+        getWarehouses: function (shippingMethodCode) {
+            if (shippingMethodCode === 'novaposhtashippingkiev') {
+                var cityRef = this.getChooseCityRef();
+            } else {
+                var cityRef = $('select[name=novaposhta_city_ref]').val();
+            }
+
             if (cityRef && cityRef != undefined && parseInt(cityRef) != 0) {
                 var dropdown = $('select[name=novaposhta_warehouse_ref]');
                 fullScreenLoader.startLoader();
@@ -32,12 +40,30 @@ define([
                         var items = JSON.parse(data);
                         dropdown.html("");
                         $.each(items, function (key, entry) {
-                            dropdown.append($('<option></option>').attr('value', entry.value).text(entry.label));
+                            dropdown.append($('<option></option>').attr('value', entry.id).text(entry.text));
                         });
                         fullScreenLoader.stopLoader();
                     }
                 });
             }
+        },
+
+        getChooseCityRef: function () {
+            $.ajax({
+                url: url.build('rest/V1/novaposhta/choosecity/'),
+                data: JSON.stringify({lkey: cityChoosen}),
+                contentType: "application/json",
+                type: "POST",
+                dataType: 'json',
+                //showLoader: true,
+                error : function () {
+                    console.log('Error loading data');
+                },
+                success : function (data) {
+                    var result = JSON.parse(data);
+                    console.log(result);
+                }
+            });
         }
     };
 })

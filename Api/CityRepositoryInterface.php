@@ -37,16 +37,22 @@ interface CityRepositoryInterface
     public function save(CityInterface $city);
 
     /**
-     * @param array $params
+     * @param string $name
      * @return mixed
      */
-    public function getList(array $params = []);
+    public function getList($name = '');
 
     /**
      * @param array $params
      * @return mixed
      */
     public function getGraphQlList(array $params = []);
+
+    /**
+     * @param string $desc_ru
+     * @return mixed
+     */
+    public function getElement($lkey = '');
 
     /**
      * @param array $cities

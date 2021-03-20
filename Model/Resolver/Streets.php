@@ -32,6 +32,6 @@ class Streets implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        return $this->streetRepository->getGraqhQlList($args['city'], $args['search']);
+        return $this->streetRepository->getGraqhQlList($args['settlement_ref'], $args['search']);
     }
 }

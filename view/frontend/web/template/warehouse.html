@@ -1,5 +1,6 @@
-<div style="margin-top: 0px;" class="warehouse input-block-level" data-bind="visible: selectedMethodCode()=='novaposhta_shipping_warehouse'">
-    <label>Отделение</label>
+<div style="margin-top: 0px;" class="warehouse input-block-level"
+     data-bind="visible: selectedMethodCode()!=''">
+    <label>Warehouse</label>
     <select style="width:100%" class="select" data-bind="
     attr: {
         name: inputName,
@@ -15,7 +16,6 @@
     optionsCaption: caption,
     optionsValue: 'value',
     optionsText: 'label',
-    event: {change: userChanges},
     afterRender: function (element) {
 
         },

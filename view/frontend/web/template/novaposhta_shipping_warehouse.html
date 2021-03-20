@@ -20,14 +20,6 @@
         <span text="method.method_title"></span>
     </td>
 </tr>
-<!-- ko if: method.method_code=='novaposhta_shipping_warehouse'
-|| method.method_code=='novaposhta_shipping_address' || method.method_code=='novaposhta_shipping_kiev' -->
-<tr attr="'class': 'block_shipping_addr block_' + method.method_code">
-    <td style="border-top: none;padding-top: 0px;" colspan="4">
-        <each args="element.getRegion('novaposhta-checkout-form-fields-warehouse')" render="" />
-    </td>
-</tr>
-<!-- /ko -->
 <tr class="row row-error"
     if="method.error_message">
     <td class="col col-error" colspan="4">

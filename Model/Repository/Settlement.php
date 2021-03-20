@@ -6,9 +6,12 @@ use CodeCustom\NovaPoshta\Api\Data\SettlementInterface;
 use CodeCustom\NovaPoshta\Api\SettlementRepositoryInterface;
 use CodeCustom\NovaPoshta\Model\ResourceModel\Settlement as SettlementResource;
 use CodeCustom\NovaPoshta\Model\SettlementFactory;
+use CodeCustom\NovaPoshta\Model\ResourceModel\Settlement\CollectionFactory as SettlementCollectionFactory;
 
 class Settlement implements SettlementRepositoryInterface
 {
+    const DESCFIELD                   = ['kiev' => 'Киев'];
+
     /**
      * @var SettlementResource
      */
@@ -19,13 +22,17 @@ class Settlement implements SettlementRepositoryInterface
      */
     protected $settlementFactory;
 
+    protected $settlementCollection;
+
     public function __construct(
         SettlementResource $settlementResource,
-        SettlementFactory $settlementFactory
+        SettlementFactory $settlementFactory,
+        SettlementCollectionFactory $settlementCollection
     )
     {
         $this->settlementResource = $settlementResource;
         $this->settlementFactory = $settlementFactory;
+        $this->settlementCollection = $settlementCollection;
     }
 
     /**
@@ -45,9 +52,27 @@ class Settlement implements SettlementRepositoryInterface
      * @param array $params
      * @return array|mixed
      */
-    public function getList(array $params = [])
+    public function getList($name = '')
     {
-        return [];
+        $collection = $this->settlementCollection->create();
+
+        if ($name) {
+            $collection->addFieldToFilter(
+                ['description_ru'],
+                [
+                    ['like' => $name . '%']
+                ]
+            );
+        }
+
+        $data[] = ['id' => 0, 'text' => __('Choose city')];
+
+        if ($collection && $collection->getSize()) {
+            foreach ($collection->getItems() as $item) {
+                $data[] = ['id' => $item->getRef(), 'text' => $item->getDescriptionRu()];
+            }
+        }
+        return json_encode($data);
     }
 
     /**
@@ -94,6 +119,35 @@ class Settlement implements SettlementRepositoryInterface
     }
 
     /**
+     * @param array $params
+     * @return array|mixed
+     */
+    public function getGraphQlList(array $params = [])
+    {
+        $collection = $this->settlementCollection->create();
+
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                $collection->addFieldToFilter(
+                    [$key],
+                    [
+                        ['like' => $value . '%'],
+                    ]
+                );
+            }
+        }
+
+        $data[] = ['name' => __('Choose settlement'), 'ref' => 0];
+
+        if ($collection && $collection->getSize()) {
+            foreach ($collection->getItems() as $item) {
+                $data[] = ['name' => $item->getDescriptionRu(), 'ref' => $item->getRef()];
+            }
+        }
+        return $data;
+    }
+
+    /**
      * @param $value
      * @param $field
      * @return \CodeCustom\NovaPoshta\Model\Settlement
@@ -103,5 +157,27 @@ class Settlement implements SettlementRepositoryInterface
         $object = $this->settlementFactory->create();
         $this->settlementResource->load($object, $value, $field);
         return $object;
+    }
+
+    /**
+     * @param string $lkey
+     * @return array|string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getElementKey($lkey = '')
+    {
+        $result = [];
+        if ($lkey) {
+            $select = $this->settlementResource->getConnection()
+                ->select()
+                ->from(
+                    $this->settlementResource->getMainTable(),
+                    ['ref', 'description_ru']
+                )
+                ->where('description_ru = ?', self::DESCFIELD[$lkey]);
+            $result = $this->settlementResource->getConnection()->fetchOne($select);
+        }
+
+        return $result;
     }
 }

@@ -45,10 +45,16 @@ interface SettlementRepositoryInterface
     public function save(SettlementInterface $settlement);
 
     /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getList($name = '');
+
+    /**
      * @param array $params
      * @return mixed
      */
-    public function getList(array $params = []);
+    public function getGraphQlList(array $params = []);
 
     /**
      * @param array $settlements

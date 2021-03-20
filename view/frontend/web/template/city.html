@@ -1,6 +1,6 @@
 <div style="margin-top: 0px;" class="city input-block-level"
-     data-bind="visible: selectedMethodCode()=='novaposhta_shipping_warehouse' || selectedMethodCode()=='novaposhta_shipping_address'">
-    <label>Город</label>
+     data-bind="visible: selectedMethodCode()=='novaposhtashippingwarehouse' || selectedMethodCode()=='novaposhtashippingaddress'">
+    <label>City</label>
     <select  class="select" data-bind="
         attr: {
             name: inputName,
@@ -18,7 +18,7 @@
         optionsValue: 'value',
         optionsText: 'label',
         afterRender: function (element) {
-
+            select2(element);
             },
         optionsAfterRender: function(option, item) {
             if (item && item.disabled) {

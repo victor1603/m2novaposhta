@@ -12,6 +12,6 @@ interface StreetRepositoryInterface
      * @param string $search
      * @return mixed
      */
-    public function getGraqhQlList(string $city = '', string $search = '');
+    public function getGraqhQlList($city = '', $search = '');
 
 }

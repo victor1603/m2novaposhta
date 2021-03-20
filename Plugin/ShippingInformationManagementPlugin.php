@@ -11,6 +11,8 @@ class ShippingInformationManagementPlugin
 {
     protected $cartRepository;
 
+    protected $extensionAttributes = null;
+
     public function __construct(
         CartRepositoryInterface $cartRepository
     )
@@ -24,9 +26,9 @@ class ShippingInformationManagementPlugin
         ShippingInformationInterface $addressInformation
     ) {
         $shippingAddress = $addressInformation->getShippingAddress();
-        $extensionAttributes = $shippingAddress->getExtensionAttributes();
-        $shippingAddress->setNovaposhtaCityRef($extensionAttributes->getNovaposhtaCityRef());
-        $shippingAddress->setNovaposhtaWarehouseRef($extensionAttributes->getNovaposhtaWarehouseRef());
+        $this->extensionAttributes = $shippingAddress->getExtensionAttributes();
+        //$shippingAddress->setNovaposhtaCityRef($extensionAttributes->getNovaposhtaCityRef());
+        //$shippingAddress->setNovaposhtaWarehouseRef($extensionAttributes->getNovaposhtaWarehouseRef());
     }
 
     public function afterSaveAddressInformation(

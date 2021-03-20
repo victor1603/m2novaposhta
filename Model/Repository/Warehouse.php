@@ -64,7 +64,7 @@ class Warehouse implements WarehouseRepositoryInterface
                 ['eq' => $cityRef],
             ]
         );
-        $data[] = ['label' => __('Choose warehouse'), 'value' => 0];
+        $data[] = ['text' => __('Choose warehouse'), 'id' => 0];
 
         if ($collection && $collection->getSize()) {
             foreach ($collection->getItems() as $item) {
@@ -111,6 +111,43 @@ class Warehouse implements WarehouseRepositoryInterface
     }
 
     /**
+     * Get all warehouse list by settlemet ref field
+     *
+     * @param string $settlementRef
+     * @param string $search
+     * @return array
+     */
+    public function getGraphQlListBySettlementRef($settlementRef = '', $search = '')
+    {
+        $collection = $this->warehouseCollectionFactory->create();
+        $collection->addFieldToFilter(
+            ['settlement_ref'],
+            [
+                ['eq' => $settlementRef],
+            ]
+        );
+
+        if ($search) {
+            $collection->addFieldToFilter(
+                ['description_ru'],
+                [
+                    ['like' => $search . '%'],
+                ]
+            );
+        }
+
+        $data[] = ['name' => __('Choose warehouse'), 'ref' => 0];
+
+        if ($collection && $collection->getSize()) {
+            foreach ($collection->getItems() as $item) {
+                $data[] = ['name' => $item->getDescriptionRu(), 'ref' => $item->getRef()];
+            }
+        }
+
+        return $data;
+    }
+
+    /**
      * @param array $warehouses
      * @return bool|mixed
      */
@@ -119,6 +156,12 @@ class Warehouse implements WarehouseRepositoryInterface
         if (!empty($warehouses)) {
             foreach ($warehouses as $warehouseData) {
                 $warehouse = $this->getByField($warehouseData[self::NP_REF], self::NP_ENTITY_FIELD);
+                if ($warehouse->getRef() == $warehouseData[self::NP_REF] &&
+                    $warehouse->getDescription() == $warehouseData[self::NP_DESCRIPTION] &&
+                    $warehouse->getDescriptionRu() == $warehouseData[self::NP_DESCRIPTION_RU]) {
+                    continue;
+                }
+
                 $warehouse->setSiteKey($warehouseData[self::NP_SITE_KEY]);
                 $warehouse->setDescription($warehouseData[self::NP_DESCRIPTION]);
                 $warehouse->setDescriptionRu($warehouseData[self::NP_DESCRIPTION_RU]);

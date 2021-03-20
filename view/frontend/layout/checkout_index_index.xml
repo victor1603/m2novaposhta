@@ -41,42 +41,49 @@
                                                                 </item>
                                                             </item>
                                                         </item>
-                                                        <item name="novaposhta-form-storage-city" xsi:type="array">
-                                                            <item name="targetName" xsi:type="string">index = novaposhta_city_ref</item>
-                                                            <item name="component" xsi:type="string">CodeCustom_NovaPoshta/js/view/city</item>
-                                                            <item name="displayArea" xsi:type="string">novaposhta-checkout-form-fields-warehouse</item>
-                                                            <item name="config" xsi:type="array">
-                                                                <item name="template" xsi:type="string">CodeCustom_NovaPoshta/city</item>
-                                                            </item>
-                                                            <item name="dataScope" xsi:type="string">shippingAddress.novaposhta_city_ref</item>
-                                                            <item name="provider" xsi:type="string">checkoutProvider</item>
-                                                            <item name="sortOrder" xsi:type="string">1</item>
-                                                            <item name="label" xsi:type="string">City</item>
-                                                        </item>
-                                                        <!-- warehouse -->
-                                                        <item name="novaposhta-form-storage-warehouse" xsi:type="array">
-                                                            <item name="targetName" xsi:type="string">index = novaposhta_warehouse_ref</item>
-                                                            <item name="component" xsi:type="string">CodeCustom_NovaPoshta/js/view/warehouse</item>
-                                                            <item name="displayArea" xsi:type="string">novaposhta-checkout-form-fields-warehouse</item>
-                                                            <item name="sortOrder" xsi:type="string">2</item>
-                                                            <item name="dataScope" xsi:type="string">shippingAddress.novaposhta_warehouse_ref</item>
-                                                            <item name="provider" xsi:type="string">checkoutProvider</item>
-                                                            <item name="label" xsi:type="string">Warehouse</item>
-                                                            <item name="config" xsi:type="array">
-                                                                <item name="template" xsi:type="string">CodeCustom_NovaPoshta/warehouse</item>
-                                                            </item>
-                                                        </item>
-                                                        <!-- test -->
-                                                        <item name="novaposhta-form-storage-test" xsi:type="array">
-                                                            <item name="targetName" xsi:type="string">index = test</item>
-                                                            <item name="component" xsi:type="string">CodeCustom_NovaPoshta/js/view/test</item>
-                                                            <item name="displayArea" xsi:type="string">novaposhta-checkout-form-fields-warehouse</item>
-                                                            <item name="sortOrder" xsi:type="string">3</item>
-                                                            <item name="dataScope" xsi:type="string">shippingAddress.novaposhta_steet</item>
-                                                            <item name="provider" xsi:type="string">checkoutProvider</item>
-                                                            <item name="label" xsi:type="string">Test</item>
-                                                            <item name="config" xsi:type="array">
-                                                                <item name="template" xsi:type="string">CodeCustom_NovaPoshta/test</item>
+                                                        <item name="shippingAdditional" xsi:type="array">
+                                                            <item name="component" xsi:type="string">uiComponent</item>
+                                                            <item name="displayArea" xsi:type="string">shippingAdditional</item>
+                                                            <item name="children" xsi:type="array">
+                                                                <item name="additional_block" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">CodeCustom_NovaPoshta/js/view/additional</item>
+                                                                </item>
+                                                                <item name="novaposhta-form-storage-city" xsi:type="array">
+                                                                    <item name="targetName" xsi:type="string">index = novaposhta_city_ref</item>
+                                                                    <item name="component" xsi:type="string">CodeCustom_NovaPoshta/js/view/city</item>
+                                                                    <item name="displayArea" xsi:type="string">novaposhta-checkout-form-fields-warehouse</item>
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="template" xsi:type="string">CodeCustom_NovaPoshta/city</item>
+                                                                    </item>
+                                                                    <item name="dataScope" xsi:type="string">shippingAddress.novaposhta_city_ref</item>
+                                                                    <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                                    <item name="sortOrder" xsi:type="string">1</item>
+                                                                    <item name="label" xsi:type="string">City</item>
+                                                                </item>
+                                                                <item name="novaposhta-form-storage-warehouse" xsi:type="array">
+                                                                    <item name="targetName" xsi:type="string">index = novaposhta_warehouse_ref</item>
+                                                                    <item name="component" xsi:type="string">CodeCustom_NovaPoshta/js/view/warehouse</item>
+                                                                    <item name="displayArea" xsi:type="string">novaposhta-checkout-form-fields-warehouse</item>
+                                                                    <item name="sortOrder" xsi:type="string">2</item>
+                                                                    <item name="dataScope" xsi:type="string">shippingAddress.novaposhta_warehouse_ref</item>
+                                                                    <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                                    <item name="label" xsi:type="string">Warehouse</item>
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="template" xsi:type="string">CodeCustom_NovaPoshta/warehouse</item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="novaposhta-form-storage-street" xsi:type="array">
+                                                                    <item name="targetName" xsi:type="string">index = novaposhta_street</item>
+                                                                    <item name="component" xsi:type="string">CodeCustom_NovaPoshta/js/view/street</item>
+                                                                    <item name="displayArea" xsi:type="string">novaposhta-checkout-form-fields-warehouse</item>
+                                                                    <item name="sortOrder" xsi:type="string">3</item>
+                                                                    <item name="dataScope" xsi:type="string">shippingAddress.novaposhta_steet</item>
+                                                                    <item name="provider" xsi:type="string">checkoutProvider</item>
+                                                                    <item name="label" xsi:type="string">Street</item>
+                                                                    <item name="config" xsi:type="array">
+                                                                        <item name="template" xsi:type="string">CodeCustom_NovaPoshta/street</item>
+                                                                    </item>
+                                                                </item>
                                                             </item>
                                                         </item>
                                                     </item>
