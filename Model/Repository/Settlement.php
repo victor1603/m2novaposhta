@@ -141,7 +141,9 @@ class Settlement implements SettlementRepositoryInterface
 
         if ($collection && $collection->getSize()) {
             foreach ($collection->getItems() as $item) {
-                $data[] = ['name' => $item->getDescriptionRu(), 'ref' => $item->getRef()];
+                $data[] = [
+                    'name' => $item->getDescriptionRu() . ' (' . $item->getAreaDescriptionRu() . ')',
+                    'ref' => $item->getRef()];
             }
         }
         return $data;

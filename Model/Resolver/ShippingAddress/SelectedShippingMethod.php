@@ -23,6 +23,7 @@ class SelectedShippingMethod implements ResolverInterface
 {
 
     const ONE_CITY_ATTR = 'novaposhta_city_ref';
+    const AREA_REF      = 'dcaadb64-4b33-11e4-ab6d-005056801329';
 
     /**
      * @var CityRepositoryInterface
@@ -111,22 +112,29 @@ class SelectedShippingMethod implements ResolverInterface
         if (NovaPoshtaWarehouse::CODE == $method) {
             $data = [
                 'input_view' => true,
-                //'input_type' => 'city',
                 'input_data' => $this->settlementRepository->getGraphQlList(['warehouse' => '1'])
             ];
         }
         if (NovaPoshtaAddress::CODE == $method) {
             $data = [
                 'input_view' => true,
-                //'input_type' => 'settlement',
                 'input_data' => $this->settlementRepository->getGraphQlList()
             ];
         }
-        if (KievFast::CODE == $method
-            || KievSuburb::CODE == $method || KievStandard::CODE == $method) {
+
+        if (KievSuburb::CODE == $method) {
             $data = [
                 'input_view' => true,
-                //'input_type' => 'settlement',
+                'input_data' => $this->settlementRepository->getGraphQlList([
+                    'area' => self::AREA_REF
+                ])
+            ];
+        }
+
+        if (KievFast::CODE == $method
+            || KievStandard::CODE == $method) {
+            $data = [
+                'input_view' => true,
                 'input_data' => [
                     ['ref' => $settlementRef, 'name' => __('Kiev')]]
             ];
@@ -134,7 +142,6 @@ class SelectedShippingMethod implements ResolverInterface
         if (NovaPoshtaKiev::CODE == $method) {
             $data = [
                 'input_view' => true,
-                //'input_type' => 'city',
                 'input_data' => [
                     ['ref' => $cityRef, 'name' => __('Kiev')]]
             ];
