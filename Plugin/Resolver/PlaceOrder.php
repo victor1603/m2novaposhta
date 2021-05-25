@@ -205,10 +205,18 @@ class PlaceOrder
      */
     public function changeOrderCustomerData($args = [])
     {
-        $this->order->addCommentToStatusHistory($args['input']['shipping_additional']['comment_ad']);
-        $this->order->setCustomerEmail($args['input']['shipping_additional']['email_ad']);
-        $this->order->setCustomerFirstname($args['input']['shipping_additional']['firstname_ad']);
-        $this->order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
+        if (isset($args['input']['shipping_additional']['comment_ad'])) {
+            $this->order->addCommentToStatusHistory($args['input']['shipping_additional']['comment_ad']);
+        }
+        if (isset($args['input']['shipping_additional']['email_ad'])) {
+            $this->order->setCustomerEmail($args['input']['shipping_additional']['email_ad']);
+        }
+        if (isset($args['input']['shipping_additional']['firstname_ad'])) {
+            $this->order->setCustomerFirstname($args['input']['shipping_additional']['firstname_ad']);
+        }
+        if (isset($args['input']['shipping_additional']['lastname_ad'])) {
+            $this->order->setCustomerLastname($args['input']['shipping_additional']['lastname_ad']);
+        }
         $this->order->save();
 
         return true;
@@ -262,8 +270,12 @@ class PlaceOrder
                 . ',' . $args['input']['shipping_additional']['apartment'];
         }
 
-        return $args['input']['shipping_additional']['address_title']
-            . ',' . $args['input']['shipping_additional']['house'];
+        if (isset($args['input']['shipping_additional']['house'])) {
+            return $args['input']['shipping_additional']['address_title']
+                . ',' . $args['input']['shipping_additional']['house'];
+        }
+
+        return $args['input']['shipping_additional']['address_title'];
     }
 
 }
