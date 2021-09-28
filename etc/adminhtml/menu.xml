@@ -1,0 +1,20 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add
+            id="CodeCustom_NovaPoshta::config"
+            title="Nova Poshta"
+            module="CodeCustom_NovaPoshta"
+            sortOrder="51"
+            resource="CodeCustom_NovaPoshta::config"
+        />
+        <add
+            id="CodeCustom_NovaPoshta::city_grid"
+            title="Cities grid"
+            module="CodeCustom_NovaPoshta"
+            sortOrder="10"
+            parent="CodeCustom_NovaPoshta::config"
+            resource="CodeCustom_NovaPoshta::city_grid"
+            action="novaposhta/config/settlement"
+        />
+    </menu>
+</config>

@@ -6,6 +6,8 @@
     <preference for="CodeCustom\NovaPoshta\Api\WarehouseRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\Warehouse" />
     <preference for="CodeCustom\NovaPoshta\Api\StreetRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\Street" />
     <preference for="CodeCustom\NovaPoshta\Api\SettlementRepositoryInterface" type="CodeCustom\NovaPoshta\Model\Repository\Settlement" />
+    <preference for="CodeCustom\NovaPoshta\Api\SearchRepositoryInterface" type="CodeCustom\NovaPoshta\Model\SearchRepository" />
+    <preference for="CodeCustom\NovaPoshta\Api\Data\SearchInterface" type="CodeCustom\NovaPoshta\Model\Search" />
 
     <type name="Magento\QuoteGraphQl\Model\Resolver\PlaceOrder">
         <plugin name="NpPlaceOrderResolver"
@@ -34,5 +36,18 @@
                 disabled="false"/>
     </type>
 
+    <virtualType name="CodeCustom\NovaPoshta\Model\ResourceModel\Settlement\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">code_custom_novaposhta_settlement</argument>
+            <argument name="resourceModel" xsi:type="string">CodeCustom\NovaPoshta\Model\ResourceModel\Settlement</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="code_custom_settlement_grid_data_source" xsi:type="string">CodeCustom\NovaPoshta\Model\ResourceModel\Settlement\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
 
 </config>

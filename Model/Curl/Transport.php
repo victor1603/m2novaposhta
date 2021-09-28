@@ -10,6 +10,8 @@ class Transport
 {
     const HEADER                    = 'content-type: application/json';
     const PAGINATION_PAGE_SIZE      = 150;
+    const ADDRESS_GENERAL           = 'AddressGeneral';
+    const METHOD_SETTLEMENT         = 'getSettlements';
 
     /**
      * @var Config
@@ -81,7 +83,12 @@ class Transport
 
         if ($this->issetNextPage($result, $page)) {
             $nextPage = $page + 1;
-            $resultData = array_merge($resultData, $this->loadApiData($modelName, $calledMethod, ['Page' => $nextPage], $nextPage));
+            $resultData = array_merge($resultData, $this->loadApiData(
+                $modelName,
+                $calledMethod,
+                $methodProperties + ['Page' => $nextPage],
+                $nextPage
+            ));
         }
 
         return $resultData;

@@ -1,0 +1,75 @@
+<?php /** @var CodeCustom\NovaPoshta\Block\Adminhtml\Grid\CitySearch $block */?>
+<?php
+$data = $block->getSettlementData();
+?>
+<div id="test-modal">
+    <?php if($data) { ?>
+    <div class="grid">
+        <div class="admin__table-wrapper">
+            <table cellspacing="0" class="data-grid">
+                <thead>
+                <tr class="headings">
+                    <th class="data-grid-th">Name</th>
+                    <th class="data-grid-th">City name(UA)</th>
+                    <th class="data-grid-th">City name(RU)</th>
+                    <th class="data-grid-th">Region</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="data-grid-controls-row data-row ">
+                    <td align="center" colspan="4" class="data-grid-checkbox-cell ammodel"><b>We Find <?=count($data)?> settlements</b></td>
+                </tr>
+                    <?php $i=0; foreach ($data as $item) { ?>
+                    <tr class="data-grid-controls-row data-row <?= $i % 2 ? '_odd-row' : '';?>">
+                        <td style="width: 50px">
+                            <input style="width: 20px; height: 20px" type="checkbox" class="city_ref" value="<?=$item['Ref']?>">
+                        </td>
+                        <td class="onlyDeletions">
+                            <ins><?= $item['Description'] ?></ins>
+                        </td>
+                        <td class="onlyInsertions">
+                            <ins><?= $item['DescriptionRu'] ?></ins>
+                        </td>
+                        <td class="onlyInsertions">
+                            <ins><?= $item['AreaDescription'] ?></ins>
+                        </td>
+                    </tr>
+                    <?php $i++; } ?>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <?php } else { ?>
+    <div class="grid">
+        <div class="admin__table-wrapper">
+            <table cellspacing="0" class="data-grid">
+                <thead>
+                <tr class="headings">
+                    <th class="data-grid-th">Name</th>
+                    <th class="data-grid-th">Old Value</th>
+                    <th class="data-grid-th">New Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="data-grid-controls-row data-row _odd-row">
+                    <td align="center" colspan="3" class="dashboard-advanced-reports-content">We couldn't find any records.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <?php } ?>
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "CodeCustom_NovaPoshta/js/search_city":{
+                "ajaxUrl":"<?= $block->escapeUrl($block->getAjaxUrl()) ?>",
+                "saveUrl":"<?= $block->escapeUrl($block->getSaveUrl()) ?>",
+                "redirectUrl":"<?= $block->escapeUrl($block->getRedirectUrl()) ?>"
+            }
+        }
+    }
+</script>

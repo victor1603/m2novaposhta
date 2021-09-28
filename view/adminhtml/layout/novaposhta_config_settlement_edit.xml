@@ -1,0 +1,12 @@
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="styles" />
+    <update handle="editor" />
+    <body>
+        <referenceContainer name="content">
+            <uiComponent name="code_custom_settlement_form" />
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="CodeCustom\NovaPoshta\Block\Adminhtml\Grid\CitySearch" template="CodeCustom_NovaPoshta::grid/city_search.phtml" name="grig.of.search"/>
+        </referenceContainer>
+    </body>
+</page>

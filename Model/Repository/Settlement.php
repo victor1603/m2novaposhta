@@ -182,4 +182,19 @@ class Settlement implements SettlementRepositoryInterface
 
         return $result;
     }
+
+    public function getItemWithKievSuburb($value, $field)
+    {
+        $object = $this->settlementFactory->create();
+        $data = $this->settlementResource
+            ->getConnection()
+            ->select()
+            ->from($this->settlementResource->getMainTable())
+            ->joinLeft(
+                ['ks' => 'code_custom_kievsuburb_settlement'],
+                $this->settlementResource->getMainTable() . '.ref = ks.settlement_ref',
+                ['ks_id' => 'entity_id'])
+            ->where($this->settlementResource->getMainTable() . '.' . $field . ' = (?)', $value);
+        return $this->settlementResource->getConnection()->fetchRow($data);
+    }
 }

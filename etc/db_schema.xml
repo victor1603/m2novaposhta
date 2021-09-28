@@ -127,4 +127,26 @@
         <column xsi:type="varchar" name="novaposhta_city_ref" nullable="true" length="255" comment="NovaPoshta City Ref"/>
         <column xsi:type="varchar" name="novaposhta_warehouse_ref" nullable="true" length="255" comment="NovaPoshta Warehouse Ref"/>
     </table>
+    <table name="code_custom_kievsuburb_settlement" resource="default" engine="innodb" comment="Kiev suburb cities">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="settlement_id" nullable="false" length="255"/>
+        <column xsi:type="varchar" name="settlement_ref" nullable="false" length="255"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        <constraint xsi:type="unique" referenceId="KIENBUBURB_REF_UN">
+            <column name="settlement_id"/>
+            <column name="settlement_ref"/>
+        </constraint>
+    </table>
+    <table name="code_custom_novaposhta_search_temp" resource="default" engine="innodb" comment="Search tenp table">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Entity ID"/>
+        <column xsi:type="varchar" name="search_key" nullable="false" length="255"/>
+        <column xsi:type="longtext" name="search_value" nullable="false"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+    </table>
 </schema>
