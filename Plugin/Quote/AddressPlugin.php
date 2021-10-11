@@ -2,21 +2,15 @@
 
 namespace CodeCustom\NovaPoshta\Plugin\Quote;
 
-use \Magento\Quote\Model\Quote;
-use CodeCustom\Portmone\Helper\Logger;
+use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\TotalsCollector;
 
 class AddressPlugin
 {
-    protected $logger;
 
-    public function __construct(
-        Logger $logger
-    )
-    {
-        $this->logger = $logger;
-    }
+    public function __construct()
+    {}
 
     /**
      * @param Quote\Address\Total $subject
