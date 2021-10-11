@@ -24,7 +24,6 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\QuoteFactory;
 use CodeCustom\NovaPoshta\Helper\Sales\Quote as QuoteHelper;
 use CodeCustom\NovaPoshta\Helper\Config;
-use Magento\Tests\NamingConvention\true\false;
 
 
 class SelectedShippingMethod implements ResolverInterface
