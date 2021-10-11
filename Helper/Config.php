@@ -24,6 +24,8 @@ class Config extends AbstractHelper
         NovaPoshtaKiev::CODE
     ];
 
+    const ONLINE_CALC_AMOUNT = 'price_online_calc';
+
     /**
      * @var StoreManagerInterface
      */

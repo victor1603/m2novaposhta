@@ -55,6 +55,7 @@ class NovaPoshtaAddress extends AbstractCarrier implements CarrierInterface
         $method->setMethodTitle($this->getConfigData('title'));
         $method->setPrice($shippingPrice);
         $method->setCost($shippingPrice);
+        $method->setTest('testData');
         $result->append($method);
 
         return $result;

@@ -78,9 +78,10 @@ class Warehouse implements WarehouseRepositoryInterface
     /**
      * @param string $cityRef
      * @param string $search
-     * @return mixed
+     * @param null $weight
+     * @return array
      */
-    public function getGraphQlList($cityRef = '', $search = '')
+    public function getGraphQlList($cityRef = '', $search = '', $weight = null)
     {
         $collection = $this->warehouseCollectionFactory->create();
         $collection->addFieldToFilter(
@@ -95,6 +96,16 @@ class Warehouse implements WarehouseRepositoryInterface
                 ['description_ru'],
                 [
                     ['like' => $search . '%'],
+                ]
+            );
+        }
+
+        if ($weight) {
+            $collection->addFieldToFilter(
+                ['total_max_weight_allowed', 'place_max_weight_allowed'],
+                [
+                    ['gteq' => $weight],
+                    ['gteq' => $weight]
                 ]
             );
         }
@@ -115,9 +126,10 @@ class Warehouse implements WarehouseRepositoryInterface
      *
      * @param string $settlementRef
      * @param string $search
+     * @param null $weight
      * @return array
      */
-    public function getGraphQlListBySettlementRef($settlementRef = '', $search = '')
+    public function getGraphQlListBySettlementRef($settlementRef = '', $search = '', $weight = null)
     {
         $collection = $this->warehouseCollectionFactory->create();
         $collection->addFieldToFilter(
@@ -132,6 +144,16 @@ class Warehouse implements WarehouseRepositoryInterface
                 ['description_ru'],
                 [
                     ['like' => $search . '%'],
+                ]
+            );
+        }
+
+        if ($weight) {
+            $collection->addFieldToFilter(
+                ['total_max_weight_allowed', 'place_max_weight_allowed'],
+                [
+                    ['gteq' => $weight],
+                    ['gteq' => $weight]
                 ]
             );
         }

@@ -4,8 +4,10 @@ namespace CodeCustom\NovaPoshta\Model\Resolver\ShippingAddress;
 
 use CodeCustom\NovaPoshta\Api\SettlementRepositoryInterface;
 use Magento\Customer\Model\Address;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
+use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use CodeCustom\NovaPoshta\Model\Carrier\NovaPoshtaWarehouse;
@@ -17,6 +19,12 @@ use CodeCustom\NovaPoshta\Model\Carrier\KievFast;
 use CodeCustom\NovaPoshta\Api\CityRepositoryInterface;
 use CodeCustom\NovaPoshta\Api\WarehouseRepositoryInterface;
 use Magento\Customer\Model\ResourceModel\Address\CollectionFactory as AddressCollectionFactory;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
+use Magento\Quote\Model\Quote;
+use Magento\Quote\Model\QuoteFactory;
+use CodeCustom\NovaPoshta\Helper\Sales\Quote as QuoteHelper;
+use CodeCustom\NovaPoshta\Helper\Config;
+use Magento\Tests\NamingConvention\true\false;
 
 
 class SelectedShippingMethod implements ResolverInterface
@@ -45,6 +53,14 @@ class SelectedShippingMethod implements ResolverInterface
      */
     protected $addressCollectionFactory;
 
+    protected $maskedQuoteIdToQuoteId;
+
+    protected $quoteFactory;
+
+    protected $quoteHelper;
+
+    protected $configHelper;
+
     /**
      * @var string
      */
@@ -66,13 +82,21 @@ class SelectedShippingMethod implements ResolverInterface
         CityRepositoryInterface $cityRepository,
         SettlementRepositoryInterface $settlementRepository,
         WarehouseRepositoryInterface $warehouseRepository,
-        AddressCollectionFactory $addressCollectionFactory
+        AddressCollectionFactory $addressCollectionFactory,
+        MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
+        QuoteFactory $quoteFactory,
+        QuoteHelper $quoteHelper,
+        Config $configHelper
     )
     {
         $this->cityRepository = $cityRepository;
         $this->settlementRepository = $settlementRepository;
         $this->warehouseRepository = $warehouseRepository;
         $this->addressCollectionFactory = $addressCollectionFactory;
+        $this->maskedQuoteIdToQuoteId = $maskedQuoteIdToQuoteId;
+        $this->quoteFactory = $quoteFactory;
+        $this->quoteHelper = $quoteHelper;
+        $this->configHelper = $configHelper;
     }
 
     /**
@@ -86,14 +110,28 @@ class SelectedShippingMethod implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
+        try {
+            $values = $info->variableValues;
+            $cartHash = $values['cartId'];
+            $cartId = $this->maskedQuoteIdToQuoteId->execute($cartHash);
+            $quote = $this->quoteFactory->create()->loadActive($cartId);
+            $totalCartWeight = $this->quoteHelper->getTotalCartWeight($quote);
+        } catch (NoSuchEntityException $exception) {
+            throw new GraphQlNoSuchEntityException(
+                __('Could not find a cart with ID "%masked_cart_id"', ['masked_cart_id' => $cartHash])
+            );
+        }
+
         $method_code = isset($value['method_code']) ? $value['method_code'] : null;
         $kievCityRef = $this->cityRepository->getElementKey($this->oneCityTitle);
         $kievSettlementRef = $this->settlementRepository->getElementKey($this->oneCityTitle);
+        $onlineAmountCalc = $this->configHelper->getConfigData($value['carrier_code'], Config::ONLINE_CALC_AMOUNT);
         return [
             'city_view' => $this->getCityView($method_code, $kievCityRef, $kievSettlementRef),
-            'warehouse_view' => $this->getWarehouseView($method_code, $kievCityRef),
+            'warehouse_view' => $this->getWarehouseView($method_code, $kievCityRef, $totalCartWeight),
             'street_view' => $this->getStreetView($method_code),
-            'customer_address' => $this->getCustomerAddresses($method_code, $context->getUserId())
+            'customer_address' => $this->getCustomerAddresses($method_code, $context->getUserId()),
+            'online_amount_calc' => $onlineAmountCalc ? true : false
         ];
     }
 
@@ -155,7 +193,7 @@ class SelectedShippingMethod implements ResolverInterface
      * @param $cityRef
      * @return array
      */
-    protected function getWarehouseView($method, $cityRef)
+    protected function getWarehouseView($method, $cityRef, $weight)
     {
         $data = [
             'input_view' => false,
@@ -172,7 +210,7 @@ class SelectedShippingMethod implements ResolverInterface
         if (NovaPoshtaKiev::CODE == $method) {
             $data = [
                 'input_view' => true,
-                'input_data' => $this->warehouseRepository->getGraphQlList($cityRef)
+                'input_data' => $this->warehouseRepository->getGraphQlList($cityRef, '', $weight)
             ];
         }
 
@@ -269,6 +307,22 @@ class SelectedShippingMethod implements ResolverInterface
             'warehouse_ref' => $address->getData('novaposhta_warehouse_ref'),
             'select_title' => $selectTitle
         ];
+    }
+
+    /**
+     * @param Quote $quote
+     */
+    private function getTotalCartWeight($quote)
+    {
+        if ($quote && !$quote->getEntityId()) {
+            return 0;
+        }
+
+        $weight = 0;
+        foreach ($quote->getAllItems() as $item) {
+            $weight += ($item->getWeight() * $item->getQty()) ;
+        }
+        return $weight;
     }
 
     /**

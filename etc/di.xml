@@ -35,6 +35,9 @@
                 sortOrder="15"
                 disabled="false"/>
     </type>
+    <type name="Magento\Quote\Model\Quote\TotalsCollector">
+        <plugin sortOrder="1" name="ccAddressPlugin" type="CodeCustom\NovaPoshta\Plugin\Quote\AddressPlugin"/>
+    </type>
 
     <virtualType name="CodeCustom\NovaPoshta\Model\ResourceModel\Settlement\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>

@@ -43,6 +43,10 @@ type Mutation {
     removecustomeraddress (address_id: Int!): Boolean
     @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\RemoveCustomerAddress")
     @doc(description: "Remove address from DB")
+
+    setNewShippingAmount (cartId: String!, cityRef: String!): Cart
+    @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\SetShippingPrice")
+    @doc(description: "Set new online price for shipping")
 }
 
 type SelectedShippingMethod {
@@ -54,6 +58,7 @@ type SelectedShippingMethodExtend {
     warehouse_view: WareHouseView
     street_view: StreetView
     customer_address: [CustomCustomerAddress]
+    online_amount_calc: Boolean
 }
 
 type CityView {

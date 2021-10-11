@@ -109,6 +109,10 @@
                     <label>Min order price</label>
                     <validate>validate-number</validate>
                 </field>
+                <field id="price_online_calc" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Price online calculationg</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
 
             <group id="suburbkievshippingaddress" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -132,6 +136,10 @@
                 <field id="min_price" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Min order price</label>
                     <validate>validate-number</validate>
+                </field>
+                <field id="price_online_calc" translate="label" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Price online calculationg</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
             <group id="standardkievshippingaddress" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">

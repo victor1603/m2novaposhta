@@ -9,6 +9,7 @@ use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\RawFactory;
 use Magento\Framework\View\LayoutFactory;
+use CodeCustom\NovaPoshta\Block\Adminhtml\Grid\CitySearch;
 
 class Search extends Action
 {
@@ -40,9 +41,7 @@ class Search extends Action
     public function execute()
     {
         $content = $this->layoutFactory->create()
-            ->createBlock(
-                \CodeCustom\NovaPoshta\Block\Adminhtml\Grid\CitySearch::class
-            );
+            ->createBlock(CitySearch::class);
 
         /** @var \Magento\Framework\Controller\Result\Raw $resultRaw */
         $resultRaw = $this->rawFactory->create();
