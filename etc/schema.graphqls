@@ -25,7 +25,7 @@ type Query {
     novaPoshtaSettlement(search: String, only_warehause: Int): [NpCities]
     @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Settlement")
 
-    novaPoshtaWarehouse(settlement_ref: String!, search: String): [NpWareHouses]
+    novaPoshtaWarehouse(cartId: String!, settlement_ref: String!, search: String): [NpWareHouses]
     @resolver(class: "\\CodeCustom\\NovaPoshta\\Model\\Resolver\\Warehouse")
 
     novaPoshtaStreets(settlement_ref: String!, search: String!): [NpStreets]

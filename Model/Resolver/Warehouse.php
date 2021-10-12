@@ -7,8 +7,9 @@ use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use CodeCustom\NovaPoshta\Api\WarehouseRepositoryInterface;
-use Magento\Quote\Model\Cart\CustomerCartResolver;
 use CodeCustom\NovaPoshta\Helper\Sales\Quote as QuoteHelper;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
+use Magento\Quote\Model\QuoteFactory;
 
 class Warehouse implements ResolverInterface
 {
@@ -19,10 +20,14 @@ class Warehouse implements ResolverInterface
     protected $warehouseRepository;
 
     /**
-     * @var CustomerCartResolver
+     * @var QuoteFactory
      */
-    protected $customerCartResolver;
+    protected $quoteFactory;
 
+    /**
+     * @var MaskedQuoteIdToQuoteIdInterface
+     */
+    protected $maskedQuoteIdToQuoteId;
     /**
      * @var QuoteHelper
      */
@@ -30,13 +35,15 @@ class Warehouse implements ResolverInterface
 
     public function __construct(
         WarehouseRepositoryInterface $warehouseRepository,
-        CustomerCartResolver $cartResolver,
+        QuoteFactory $quoteFactory,
+        MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         QuoteHelper $quoteHelper
     )
     {
         $this->warehouseRepository = $warehouseRepository;
-        $this->customerCartResolver = $cartResolver;
+        $this->quoteFactory = $quoteFactory;
         $this->quoteHelper = $quoteHelper;
+        $this->maskedQuoteIdToQuoteId = $maskedQuoteIdToQuoteId;
     }
 
     /**
@@ -50,8 +57,10 @@ class Warehouse implements ResolverInterface
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
         try {
-            $customerId = $context->getUserId();
-            $cart = $this->customerCartResolver->resolve($customerId);
+            $values = $info->variableValues;
+            $cartHash = $values['cartId'];
+            $cartId = $this->maskedQuoteIdToQuoteId->execute($cartHash);
+            $cart = $this->quoteFactory->create()->loadActive($cartId);
             $totalCartWeight = $this->quoteHelper->getTotalCartWeight($cart);
         } catch (\Exception $exception) {
             throw new GraphQlNoSuchEntityException(
