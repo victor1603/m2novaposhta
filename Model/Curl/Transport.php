@@ -101,6 +101,7 @@ class Transport
      */
     protected function issetNextPage($data = [], $currentPage = 1)
     {
+        $data['info'] = isset($data['info']['totalCount']) ? $data['info'] : $data['info'][0];
         if (isset($data['info']['totalCount']) && isset($data['data']) && $data['info']['totalCount'] > count($data['data'])) {
             if ($data['info']['totalCount'] > $currentPage * self::PAGINATION_PAGE_SIZE) {
                 return true;
